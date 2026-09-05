@@ -1,10 +1,9 @@
 ---
-title: "{{ replace .Name "-" "." }} AI 要闻"
-date: {{ .Date }}
+title: "{{ .Name }} AI 要闻"
+date: {{ .Name }}T08:00:00+08:00
 summary: ""
 tags: []
 sources: []
-draft: false
 ---
 
 ## 模型与产品
