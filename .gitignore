@@ -1,0 +1,28 @@
+# macOS
+.DS_Store
+
+# 环境变量与密钥
+.env
+.env.*
+!.env.example
+
+# 依赖
+node_modules/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# 构建产物
+dist/
+build/
+public/
+.cache/
+
+# 日志
+*.log
+npm-debug.log*
+
+# 编辑器
+.vscode/
+.idea/
