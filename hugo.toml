@@ -1,0 +1,37 @@
+baseURL = 'https://luoli523.github.io/guige-ai-site/'
+languageCode = 'zh-CN'
+defaultContentLanguage = 'zh-cn'
+title = '鬼哥的 AI 行业动态'
+enableRobotsTXT = true
+enableEmoji = true
+timeZone = 'Asia/Shanghai'
+
+[pagination]
+  pagerSize = 15
+
+[permalinks]
+  daily = '/daily/:year-:month-:day/'
+
+[params]
+  description = '每日 AI 行业与技术动态，自动采集、自动梳理、每日更新。'
+  subtitle = "Gui Ge's AI Radar"
+  mainSite = 'https://luoli523.github.io/'
+  repo = 'https://github.com/luoli523/guige-ai-site'
+
+[markup]
+  [markup.goldmark.renderer]
+    unsafe = true
+  [markup.highlight]
+    noClasses = false
+    style = 'github-dark'
+    lineNos = false
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 3
+
+[outputs]
+  home = ['HTML', 'RSS']
+  section = ['HTML', 'RSS']
+
+[taxonomies]
+  tag = 'tags'

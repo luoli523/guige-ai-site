@@ -1,0 +1,29 @@
+{{/* 单条简报卡片。ctx: { "page": Page, "latest": bool } */}}
+{{ $p := .page }}
+{{ $wd := index (slice "周日" "周一" "周二" "周三" "周四" "周五" "周六") (int $p.Date.Weekday) }}
+
+<a class="brief{{ if .latest }} is-latest{{ end }}" href="{{ $p.RelPermalink }}">
+  {{ if .latest }}
+    <span class="latest-badge"><span class="live-dot" aria-hidden="true"></span>最新一期</span>
+  {{ end }}
+
+  <div class="brief-date">
+    <time datetime="{{ $p.Date.Format "2006-01-02" }}">{{ $p.Date.Format "2006 / 01 / 02" }}</time>
+    <span class="weekday">{{ $wd }}</span>
+  </div>
+
+  <h3 class="brief-title">{{ $p.Title }}</h3>
+
+  {{ with $p.Description | default ($p.Summary | plainify | truncate 120 "…") }}
+    <p class="brief-summary">{{ . }}</p>
+  {{ end }}
+
+  {{ with $p.Params.tags }}
+    <div class="tag-row">
+      {{ range $i, $t := first 6 . }}
+        {{ $cls := index (slice "tag-teal" "tag-amber" "tag-purple") (mod $i 3) }}
+        <span class="tag {{ $cls }}">{{ $t }}</span>
+      {{ end }}
+    </div>
+  {{ end }}
+</a>

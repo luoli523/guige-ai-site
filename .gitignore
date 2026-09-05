@@ -26,3 +26,8 @@ npm-debug.log*
 # 编辑器
 .vscode/
 .idea/
+
+# Hugo
+public/
+resources/
+.hugo_build.lock

@@ -1,32 +1,89 @@
 # 鬼哥的 AI 行业动态
 
-> AI 行业动态跟踪与学习资料整理
+> 每日 AI 行业与技术动态，自动采集、自动梳理、每日更新。
 
-每日收集 AI 行业要闻，经 LLM 梳理后发布为可读的动态站点，并为 [鬼哥的空间](https://luoli523.github.io/) 首页的「每日 AI 要闻」板块提供数据来源。
+站点：<https://luoli523.github.io/guige-ai-site/>
 
-## 目标
+一天一篇汇总简报。内容由后台 bot 抓取 X.com 与科技媒体、经 LLM 梳理后产出 Markdown，提交到本仓库即自动构建发布。页面明示 AI 自动生成，信源与筛选标准公开在「关于本站」页。
 
-- **每日要闻** — 自动采集当日 AI 行业重要动态（模型发布、产品更新、融资并购、政策监管、技术论文）
-- **LLM 梳理** — 去重、归类、摘要，把碎片信息整理成一天一条主线的可读简报
-- **公开站点** — 通过 GitHub Pages 发布，可独立浏览与检索
-- **主站联动** — 主站首页新增板块消费本项目产出的数据，展示最新几条要闻
+## 技术栈
 
-## 现状
-
-项目初始化阶段，技术栈待定。
-
-## 规划
-
-| 阶段 | 内容 |
+| 项 | 选择 |
 |---|---|
-| 1 | 目录与仓库初始化 ✅ |
-| 2 | 确定技术栈与站点骨架 |
-| 3 | 采集 + LLM 梳理流水线 |
-| 4 | GitHub Actions 每日自动更新 |
-| 5 | 主站首页「每日 AI 要闻」板块接入 |
+| 静态站生成 | Hugo **0.159.1 extended**（无第三方主题，layouts 手写） |
+| 设计系统 | 复用主站 [luoli523.github.io](https://github.com/luoli523/luoli523.github.io) 的 Ghost Protocol 配色与字体 |
+| 部署 | GitHub Actions → GitHub Pages，push 到 `main` 即发布 |
+| 主题切换 | `localStorage.gg-theme`，与主站同域共享，切换状态跨站保持 |
+
+## 目录结构
+
+```
+hugo.toml                     站点配置（baseURL 子路径、permalinks、taxonomy）
+archetypes/daily.md           每日简报的 front matter 模板
+assets/css/main.css           设计系统（token + 组件）
+assets/css/syntax.css         代码高亮（hugo gen chromastyles 生成）
+layouts/
+  baseof.html                 页面外壳：head / orb / nav / footer / JS
+  home.html                   首页：头条 + 往期列表
+  list.html                   通用列表（tags 等）
+  single.html                 通用单页（关于）
+  404.html
+  daily/list.html             归档页（按月分组）
+  daily/single.html           单日简报页
+  _partials/                  nav / footer / brief-card
+content/
+  daily/YYYY-MM-DD.md         每日简报 ← bot 产出落在这里
+  daily/_index.md             归档页元信息
+  about.md                    关于本站（信源与筛选标准）
+```
+
+## 内容契约（bot 的输出规范）
+
+文件路径固定为 `content/daily/YYYY-MM-DD.md`，URL 自动为 `/daily/YYYY-MM-DD/`。
+
+```yaml
+---
+title: "2026-09-05 AI 要闻"          # 必填
+date: 2026-09-05T08:00:00+08:00      # 必填，带时区，决定排序与 URL
+summary: "一句话概括今天最重要的事"    # 选填，缺省时自动截取正文
+tags: ["Anthropic", "开源模型"]       # 选填，缺省时不渲染标签行
+sources: ["x.com", "techcrunch"]     # 选填，缺省时不渲染信源行
+---
+
+## 模型与产品
+- **条目标题** — 一句话说清发生了什么、为什么值得注意。[来源](https://…)
+
+## 公司与资本
+## 技术与论文
+## 政策与生态
+```
+
+正文结构不强约束，分类小标题用 `##`，条目用 `-` 列表、加粗开头、末尾附来源链接即可。**只有 `title` 和 `date` 是硬要求**，其余字段缺失时模板会自动降级，bot 零改动也能跑。
+
+新建一篇：
+
+```bash
+hugo new content/daily/$(date +%F).md --kind daily
+```
+
+## 本地开发
+
+```bash
+hugo server            # http://localhost:1313/guige-ai-site/
+hugo --minify          # 生产构建到 public/
+```
+
+代码高亮样式如需换主题：`hugo gen chromastyles --style=<name> > assets/css/syntax.css`
+
+## 待办
+
+- [ ] 「关于本站」页的信源清单与筛选标准换成实际内容
+- [ ] 接入 bot：定时产出 md 并提交到 `content/daily/`
+- [ ] 删除 `content/daily/` 下三篇 `【示例】` 占位简报
+- [ ] 主站首页新增「每日 AI 要闻」板块，消费本站 `index.xml` 或产出的 JSON
 
 ## 相关项目
 
 - [luoli523.github.io](https://github.com/luoli523/luoli523.github.io) — 主站（Hugo）
-- [fin-report](https://github.com/luoli523/fin-report) — AI 产业链投资简报，每日自动生成的同类流水线
+- [fin-report](https://github.com/luoli523/fin-report) — AI 产业链投资简报，同类每日自动流水线
 - [guige-skills](https://github.com/luoli523/guige-skills) — Claude Code 自定义技能包

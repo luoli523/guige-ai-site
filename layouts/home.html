@@ -1,0 +1,67 @@
+{{ define "main" }}
+{{ $briefs := where .Site.RegularPages "Section" "daily" }}
+{{ $latest := index $briefs 0 }}
+
+<div class="wrap">
+  <header class="page-head reveal">
+    <div class="hero-watermark" aria-hidden="true">鬼</div>
+
+    <div class="byline">
+      <img class="byline-avatar" src="{{ "img/avatar-face.png" | relURL }}" alt="鬼哥" width="56" height="56" loading="eager" />
+      <div class="byline-text">
+        <span class="byline-name">鬼哥 · luoli523</span>
+        <span class="byline-role">每天替你盯着 AI 圈</span>
+      </div>
+    </div>
+
+    <div class="eyebrow">Daily AI Radar</div>
+    <h1 class="page-title">鬼哥的 AI 行业动态</h1>
+    <p class="page-desc">{{ .Site.Params.description }}每天一篇，覆盖模型与产品、公司与资本、技术与论文、政策与生态。</p>
+
+    <div class="auto-note">
+      <span class="live-dot" aria-hidden="true"></span>
+      本站由 BOT 自动采集 + LLM 梳理生成 · <a href="{{ (site.GetPage "/about").RelPermalink }}" style="color:var(--teal)">信源与筛选标准</a>
+    </div>
+
+    {{ if $briefs }}
+    <div class="stats">
+      <div>
+        <span class="stat-num">{{ len $briefs }}</span>
+        <span class="stat-label">期简报</span>
+      </div>
+      <div>
+        <span class="stat-num">{{ $latest.Date.Format "01.02" }}</span>
+        <span class="stat-label">最近更新</span>
+      </div>
+      <div>
+        <span class="stat-num">{{ len .Site.Taxonomies.tags }}</span>
+        <span class="stat-label">个话题</span>
+      </div>
+    </div>
+    {{ end }}
+  </header>
+
+  <section class="section">
+    {{ if $briefs }}
+      <div class="brief-list reveal" style="margin-bottom:34px">
+        {{ partial "brief-card.html" (dict "page" $latest "latest" true) }}
+      </div>
+
+      {{ $rest := after 1 $briefs }}
+      {{ if $rest }}
+        <div class="section-bar reveal">
+          <h2>往期简报</h2>
+          <a class="more" href="{{ (site.GetPage "/daily").RelPermalink }}">全部归档 →</a>
+        </div>
+        <div class="brief-list reveal-stagger">
+          {{ range first 8 $rest }}
+            {{ partial "brief-card.html" (dict "page" . "latest" false) }}
+          {{ end }}
+        </div>
+      {{ end }}
+    {{ else }}
+      <p class="empty">还没有简报。等 bot 的第一次投喂 🤖</p>
+    {{ end }}
+  </section>
+</div>
+{{ end }}

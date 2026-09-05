@@ -1,0 +1,29 @@
+{{ define "main" }}
+{{ $briefs := where .Site.RegularPages "Section" "daily" }}
+
+<div class="wrap">
+  <header class="page-head reveal">
+    <div class="eyebrow">Archive</div>
+    <h1 class="page-title">全部简报</h1>
+    <p class="page-desc">共 {{ len $briefs }} 期，按月份倒序排列。</p>
+  </header>
+
+  <section class="section">
+    {{ if $briefs }}
+      {{ range $briefs.GroupByDate "2006 年 01 月" }}
+        <div class="archive-group reveal">
+          <div class="archive-month">{{ .Key }} · {{ len .Pages }} 期</div>
+          {{ range .Pages }}
+            <a class="archive-item" href="{{ .RelPermalink }}">
+              <span class="archive-day">{{ .Date.Format "01-02" }}</span>
+              <span class="archive-title">{{ .Title }}</span>
+            </a>
+          {{ end }}
+        </div>
+      {{ end }}
+    {{ else }}
+      <p class="empty">还没有简报。</p>
+    {{ end }}
+  </section>
+</div>
+{{ end }}

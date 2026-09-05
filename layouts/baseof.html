@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>{{ if .IsHome }}{{ .Site.Title }} — {{ .Site.Params.subtitle }}{{ else }}{{ .Title }} · {{ .Site.Title }}{{ end }}</title>
+  <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}" />
+
+  <meta property="og:title" content="{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }}{{ end }}" />
+  <meta property="og:description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}" />
+  <meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}" />
+  <meta property="og:url" content="{{ .Permalink }}" />
+
+  <link rel="icon" type="image/png" href="{{ "img/favicon.png" | relURL }}" />
+  <link rel="apple-touch-icon" href="{{ "img/favicon.png" | relURL }}" />
+  <link rel="canonical" href="{{ .Permalink }}" />
+  {{ with .OutputFormats.Get "rss" }}<link rel="alternate" type="application/rss+xml" title="{{ $.Site.Title }}" href="{{ .Permalink }}" />{{ end }}
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  {{ with resources.Get "css/main.css" }}
+    {{ $css := . | minify | fingerprint }}
+    <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}" />
+  {{ end }}
+
+  {{ with resources.Get "css/syntax.css" }}
+    <link rel="stylesheet" href="{{ (. | minify | fingerprint).RelPermalink }}" />
+  {{ end }}
+
+  <!-- 主题在首帧前定好，避免闪白。与主站共用 gg-theme（同域 localStorage） -->
+  <script>
+    (function () {
+      var t = localStorage.getItem('gg-theme') || localStorage.getItem('StackColorScheme') || 'light';
+      document.documentElement.dataset.theme = t;
+    })();
+  </script>
+</head>
+
+<body>
+  <div class="orb-field" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  {{ partial "nav.html" . }}
+
+  <main>
+    {{ block "main" . }}{{ end }}
+  </main>
+
+  {{ partial "footer.html" . }}
+
+  {{ partial "chat.html" . }}
+
+  <script>
+    (function () {
+      'use strict';
+
+      // 滚动显现
+      var els = document.querySelectorAll('.reveal, .reveal-stagger');
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+          });
+        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+        els.forEach(function (el) { io.observe(el); });
+      } else {
+        els.forEach(function (el) { el.classList.add('visible'); });
+      }
+
+      // 主题切换：gg-theme 为唯一数据源，同步 StackColorScheme 供主站内页读取
+      var html = document.documentElement;
+      var btn = document.getElementById('themeToggle');
+      if (btn) {
+        btn.addEventListener('click', function () {
+          var next = html.dataset.theme === 'dark' ? 'light' : 'dark';
+          html.dataset.theme = next;
+          localStorage.setItem('gg-theme', next);
+          localStorage.setItem('StackColorScheme', next);
+        });
+      }
+
+      // 导航滚动态
+      var nav = document.querySelector('.nav');
+      var onScroll = function () { nav.classList.toggle('scrolled', window.scrollY > 20); };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+
+      // 宽表格横向滚动
+      document.querySelectorAll('.prose table').forEach(function (t) {
+        var box = document.createElement('div');
+        box.className = 'table-scroll';
+        t.parentNode.insertBefore(box, t);
+        box.appendChild(t);
+      });
+    })();
+  </script>
+</body>
+</html>

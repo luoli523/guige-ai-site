@@ -1,0 +1,13 @@
+{{ define "main" }}
+<div class="wrap">
+  <header class="page-head">
+    <div class="eyebrow">404</div>
+    <h1 class="page-title">这一页不存在</h1>
+    <p class="page-desc">链接可能过期了，或者这一期简报还没生成。</p>
+    <div class="tag-row" style="margin-top:28px">
+      <a class="footer-link" href="{{ site.Home.RelPermalink }}">← 回首页</a>
+      <a class="footer-link" href="{{ (site.GetPage "/daily").RelPermalink }}">看全部归档</a>
+    </div>
+  </header>
+</div>
+{{ end }}

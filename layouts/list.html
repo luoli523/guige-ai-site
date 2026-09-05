@@ -1,0 +1,16 @@
+{{ define "main" }}
+<div class="wrap">
+  <header class="page-head reveal">
+    <h1 class="page-title">{{ .Title }}</h1>
+    {{ with .Description }}<p class="page-desc">{{ . }}</p>{{ end }}
+  </header>
+
+  <section class="section">
+    <div class="brief-list reveal-stagger">
+      {{ range .Pages }}
+        {{ partial "brief-card.html" (dict "page" . "latest" false) }}
+      {{ end }}
+    </div>
+  </section>
+</div>
+{{ end }}
