@@ -22,6 +22,8 @@ hugo.toml                     站点配置（baseURL 子路径、permalinks、ta
 archetypes/daily.md           每日简报的 front matter 模板
 assets/css/main.css           设计系统（token + 组件）
 assets/css/syntax.css         代码高亮（hugo gen chromastyles 生成）
+docs/BOT.md                   bot 更新指南（操作规范 + JSON schema + 退出码）
+scripts/new_brief.py          JSON → 简报：校验、渲染、构建、提交
 layouts/
   baseof.html                 页面外壳：head / orb / nav / footer / JS
   home.html                   首页：头条 + 往期列表
@@ -60,11 +62,21 @@ sources: ["x.com", "techcrunch"]     # 选填，缺省时不渲染信源行
 
 正文结构不强约束，分类小标题用 `##`，条目用 `-` 列表、加粗开头、末尾附来源链接即可。**只有 `title` 和 `date` 是硬要求**，其余字段缺失时模板会自动降级，bot 零改动也能跑。
 
-新建一篇：
+新建一篇（人工）：
 
 ```bash
 hugo new content/daily/$(date +%F).md --kind daily
 ```
+
+bot 走脚本，不要自己拼 front matter —— 产出 JSON 交给 `scripts/new_brief.py`，
+它负责校验、转义、补时区、跑一次 Hugo 构建确认没问题，再提交推送：
+
+```bash
+echo "$BRIEF_JSON" | python3 scripts/new_brief.py --check          # 只校验
+echo "$BRIEF_JSON" | python3 scripts/new_brief.py --commit --push  # 落盘并发布
+```
+
+完整规范见 **[docs/BOT.md](docs/BOT.md)**（可直接当 bot 的 system prompt）。
 
 ## 本地开发
 
@@ -78,7 +90,7 @@ hugo --minify          # 生产构建到 public/
 ## 待办
 
 - [ ] 「关于本站」页的信源清单与筛选标准换成实际内容
-- [ ] 接入 bot：定时产出 md 并提交到 `content/daily/`
+- [ ] 接入 bot：按 [docs/BOT.md](docs/BOT.md) 配好写权限与定时任务
 - [ ] 删除 `content/daily/` 下三篇 `【示例】` 占位简报
 - [ ] 主站首页新增「每日 AI 要闻」板块，消费本站 `index.xml` 或产出的 JSON
 
