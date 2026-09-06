@@ -17,6 +17,19 @@
 
 ---
 
+
+## 信源（每日必采，交叉核实）
+
+不要只依赖 X。每日候选至少覆盖：
+
+1. **X.com** — Following + 公开 AI 技术/产品讨论  
+2. **GitHub** — 重要 Release、热仓、关键 org 新仓/大更新  
+3. **Hugging Face** — Trending 模型/数据集、官方 org 新模型卡  
+4. **官方 Blog / 研究页** — OpenAI、Anthropic、Google DeepMind、Meta AI、Microsoft Research  
+5. **arXiv** — cs.AI / cs.CL / cs.LG 高热或大厂挂名预印本（宁缺毋滥）
+
+`sources` 字段如实列出当天实际用到的渠道短名（如 `github.com`、`huggingface.co`、`arxiv.org`）。同一事件多源合并；二手传闻标 **待核** 或丢弃。
+
 ## 报告结构（强制）
 
 正文使用 Markdown，至少包含以下一级/二级结构（标题文字可微调，但语义必须齐全）：
