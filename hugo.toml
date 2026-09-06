@@ -32,7 +32,7 @@ timeZone = 'Asia/Singapore'
 
 [outputs]
   home = ['HTML', 'RSS']
-  section = ['HTML', 'RSS']
+  section = ['HTML', 'RSS', 'JSON']
 
 [taxonomies]
   tag = 'tags'

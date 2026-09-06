@@ -1,0 +1,24 @@
+{{- /* 每日简报的 JSON feed，供主站首页「每日 AI 要闻」板块消费。
+       比 RSS 多两样东西：标签，以及配图的最终 URL —— 配图经 Hugo Pipes
+       转 WebP 后文件名带内容哈希，靠约定猜不出来，只能由本站发布。 */ -}}
+{{- $items := slice -}}
+{{- range first 10 (where .Site.RegularPages "Section" "daily") -}}
+  {{- $hero := "" -}}
+  {{- with .Params.hero -}}
+    {{- with resources.Get . -}}
+      {{- $hero = (.Process "webp q82").Permalink -}}
+    {{- else -}}
+      {{- $hero = . | absURL -}}
+    {{- end -}}
+  {{- end -}}
+  {{- $items = $items | append (dict
+      "title"    .Title
+      "date"     (.Date.Format "2006-01-02")
+      "url"      .Permalink
+      "summary"  (.Description | default (.Summary | plainify | truncate 120 "…"))
+      "tags"     (.Params.tags | default slice)
+      "hero"     $hero
+      "hero_alt" (.Params.hero_alt | default .Title)
+  ) -}}
+{{- end -}}
+{{- dict "site" .Site.Title "url" .Site.Home.Permalink "items" $items | jsonify (dict "indent" "  ") -}}
