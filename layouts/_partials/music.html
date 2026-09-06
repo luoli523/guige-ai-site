@@ -1,0 +1,43 @@
+{{/* 鬼哥音乐 —— 与主站同款。视频文件复用主站的 /dcxj.mp4（同域，不在本仓库重复放 4.7MB） */}}
+<div class="float-player" id="floatPlayer">
+  <div class="float-player-header">
+    <span class="float-player-title">🎵 看累了听个音乐吧</span>
+    <button class="float-player-close" id="floatPlayerClose" aria-label="关闭播放器">✕</button>
+  </div>
+  <video id="musicVideo" src="/dcxj.mp4" controls preload="none" playsinline></video>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var btn    = document.getElementById('musicToggle');
+  var player = document.getElementById('floatPlayer');
+  var close  = document.getElementById('floatPlayerClose');
+  var video  = document.getElementById('musicVideo');
+  if (!btn || !player || !close || !video) return;
+
+  function stop() {
+    player.classList.remove('open');
+    btn.classList.remove('active');
+    video.pause();
+  }
+
+  btn.addEventListener('click', function () {
+    var open = player.classList.toggle('open');
+    btn.classList.toggle('active', open);
+    if (open) {
+      // 浏览器可能拦截自动播放，拦了就让用户点视频自带的播放键
+      var r = video.play();
+      if (r && r.catch) r.catch(function () {});
+    } else {
+      video.pause();
+    }
+  });
+
+  close.addEventListener('click', stop);
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && player.classList.contains('open')) stop();
+  });
+})();
+</script>

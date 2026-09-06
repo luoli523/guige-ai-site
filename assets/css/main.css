@@ -1273,3 +1273,95 @@ main { position: relative; z-index: 1; flex: 1 0 auto; }
 @media print {
   .toc-float { display: none; }
 }
+
+/* ============================================================
+   鬼哥音乐（与主站同款）
+   播放器放左下角：本站右下角被聊天气泡占着，主站没这个冲突
+============================================================ */
+.music-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--teal-dim);
+  color: var(--teal);
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.25s ease;
+}
+.music-btn:hover { background: rgba(45, 212, 191, 0.18); border-color: var(--border-hover); }
+.music-btn.active { background: rgba(45, 212, 191, 0.18); border-color: var(--teal); }
+
+.music-btn.active .music-icon {
+  display: inline-block;
+  animation: musicSpin 1.5s linear infinite;
+}
+@keyframes musicSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.float-player {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 9200;
+  width: 340px;
+  max-width: calc(100vw - 48px);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.float-player.open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+[data-theme="light"] .float-player {
+  background: rgba(255, 255, 255, 0.97);
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+.float-player-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.float-player-title { font-size: 13px; color: var(--text-secondary); }
+
+.float-player-close {
+  padding: 2px 6px;
+  border: none;
+  border-radius: 4px;
+  background: none;
+  color: var(--text-secondary);
+  font-size: 16px;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s;
+}
+.float-player-close:hover { color: var(--text-primary); background: var(--teal-dim); }
+
+.float-player video { display: block; width: 100%; }
+
+@media (max-width: 560px) {
+  .float-player { width: calc(100% - 32px); left: 16px; bottom: 16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .music-btn.active .music-icon { animation: none; }
+}
