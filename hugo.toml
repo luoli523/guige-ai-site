@@ -14,7 +14,7 @@ timeZone = 'Asia/Shanghai'
   daily = '/daily/:year-:month-:day/'
 
 [params]
-  description = '每日 AI 行业与技术动态，自动采集、自动梳理、每日更新。'
+  description = '每日 AI 行业与技术深读，自动采集、交叉核实、每日更新。'
   subtitle = "Gui Ge's AI Radar"
   mainSite = 'https://luoli523.github.io/'
   repo = 'https://github.com/luoli523/guige-ai-site'

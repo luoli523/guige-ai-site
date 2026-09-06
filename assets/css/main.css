@@ -1177,39 +1177,99 @@ main { position: relative; z-index: 1; flex: 1 0 auto; }
 }
 
 /* ============================================================
-   长文目录
+   长文目录浮窗
 ============================================================ */
-.toc {
-  margin-bottom: 40px;
-  padding: 20px 24px;
+.toc-float {
+  position: fixed;
+  top: calc(var(--nav-h) + 20px);
+  right: 20px;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  width: 262px;
+  max-width: calc(100vw - 40px);
+  overflow: hidden;
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.32);
+  transition: width var(--transition), box-shadow var(--transition);
 }
 
-.toc-label {
+[data-theme="light"] .toc-float { box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08); }
+
+.toc-float[data-open="false"] { width: auto; }
+.toc-float[data-open="false"] .toc-body { display: none; }
+
+.toc-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border: none;
+  background: none;
+  color: var(--text-secondary);
   font-family: var(--font-mono);
   font-size: 0.7rem;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 12px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color var(--transition);
 }
+.toc-toggle:hover { color: var(--teal); }
+.toc-toggle svg { width: 15px; height: 15px; flex-shrink: 0; }
 
-.toc ul { list-style: none; margin: 0; padding: 0; }
-.toc ul ul { margin: 2px 0 6px 16px; }
+.toc-toggle .chev {
+  margin-left: auto;
+  padding-left: 6px;
+  font-size: 0.8rem;
+  transition: transform var(--transition);
+}
+.toc-float[data-open="false"] .chev { transform: rotate(-90deg); }
 
-.toc li { margin: 1px 0; }
+.toc-body {
+  max-height: calc(100vh - var(--nav-h) - 110px);
+  padding: 0 10px 12px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.toc-body::-webkit-scrollbar { width: 4px; }
+.toc-body::-webkit-scrollbar-track { background: transparent; }
+.toc-body::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 2px; }
 
-.toc a {
-  display: inline-block;
-  padding: 2px 0;
+.toc-body ul { list-style: none; margin: 0; padding: 0; }
+.toc-body ul ul { margin: 1px 0 4px 10px; }
+.toc-body li { margin: 0; }
+
+.toc-body a {
+  display: block;
+  padding: 4px 8px;
+  border-left: 2px solid transparent;
+  border-radius: 0 4px 4px 0;
   color: var(--text-secondary);
-  font-size: 0.88rem;
-  line-height: 1.5;
-  border-bottom: 1px solid transparent;
-  transition: color var(--transition), border-color var(--transition);
+  font-size: 0.82rem;
+  line-height: 1.45;
+  transition: color var(--transition), background var(--transition), border-color var(--transition);
 }
-.toc a:hover { color: var(--teal); border-bottom-color: var(--teal); }
+.toc-body a:hover { color: var(--teal); background: var(--teal-dim); }
 
-.toc ul ul a { font-size: 0.82rem; color: var(--text-muted); }
+.toc-body a.active {
+  color: var(--teal);
+  background: var(--teal-dim);
+  border-left-color: var(--teal);
+}
+
+.toc-body ul ul a { font-size: 0.78rem; color: var(--text-muted); }
+
+/* 屏幕放不下正文旁边的浮窗时，展开态就浮在正文之上——用户主动点开的，可接受 */
+@media (max-width: 600px) {
+  .toc-float { top: calc(var(--nav-h) + 12px); right: 12px; width: 240px; }
+  .toc-body { max-height: 60vh; }
+}
+
+@media print {
+  .toc-float { display: none; }
+}

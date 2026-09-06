@@ -67,7 +67,6 @@ hugo --minify          # 生产构建到 public/
 
 ## 待办
 
-- [ ] 「关于本站」页的信源清单与筛选标准换成实际内容
 - [x] 接入 bot：按 [docs/BOT.md](docs/BOT.md) 深读契约；写权限与定时由 Grok Bot 早报 routine 执行
 - [ ] 主站首页新增「每日 AI 要闻」板块，消费本站 `index.xml` 或产出的 JSON
 

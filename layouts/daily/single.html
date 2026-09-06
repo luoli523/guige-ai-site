@@ -26,11 +26,20 @@
     {{ end }}
   </header>
 
-  {{/* 长文自动生成目录；短简报不显示 */}}
+  {{/* 长文目录：右上角浮窗，跟随阅读高亮当前小节。短简报不显示 */}}
   {{ if gt .WordCount 800 }}
-    <nav class="toc" aria-label="目录">
-      <div class="toc-label">目录</div>
-      {{ .TableOfContents }}
+    <nav class="toc-float" id="tocFloat" data-open="false" aria-label="目录">
+      <button class="toc-toggle" id="tocToggle" aria-expanded="false" aria-controls="tocBody">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/>
+          <circle cx="3.5" cy="6" r="1.2" fill="currentColor" stroke="none"/>
+          <circle cx="3.5" cy="12" r="1.2" fill="currentColor" stroke="none"/>
+          <circle cx="3.5" cy="18" r="1.2" fill="currentColor" stroke="none"/>
+        </svg>
+        <span>目录</span>
+        <span class="chev" aria-hidden="true">▾</span>
+      </button>
+      <div class="toc-body" id="tocBody">{{ .TableOfContents }}</div>
     </nav>
   {{ end }}
 
@@ -53,4 +62,78 @@
     {{ end }}
   </nav>
 </div>
+
+{{ if gt .WordCount 800 }}
+<script>
+(function () {
+  'use strict';
+  var root = document.getElementById('tocFloat');
+  if (!root) return;
+
+  var btn   = document.getElementById('tocToggle');
+  var links = Array.prototype.slice.call(root.querySelectorAll('a[href^="#"]'));
+  var WIDE  = window.matchMedia('(min-width: 1480px)');
+
+  // 宽屏默认展开；窄屏默认收起。用户手动切换过就记住他的选择
+  function setOpen(open, remember) {
+    root.dataset.open = open ? 'true' : 'false';
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (remember) {
+      try { localStorage.setItem('gg-toc-open', open ? '1' : '0'); } catch (e) {}
+    }
+  }
+
+  var saved = null;
+  try { saved = localStorage.getItem('gg-toc-open'); } catch (e) {}
+  setOpen(saved === null ? WIDE.matches : saved === '1', false);
+
+  btn.addEventListener('click', function () {
+    setOpen(root.dataset.open !== 'true', true);
+  });
+
+  // 窄屏点条目后自动收起，免得浮窗挡住正文
+  links.forEach(function (a) {
+    a.addEventListener('click', function () {
+      if (!WIDE.matches) setOpen(false, false);
+    });
+  });
+
+  // 跟随阅读高亮当前小节
+  var map = {};
+  var targets = [];
+  links.forEach(function (a) {
+    var el = document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1)));
+    if (el) { map[el.id] = a; targets.push(el); }
+  });
+  if (!targets.length || !('IntersectionObserver' in window)) return;
+
+  var visible = new Set();
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) visible.add(e.target.id);
+      else visible.delete(e.target.id);
+    });
+    // 取文档顺序里最靠前的可见标题作为当前小节
+    var current = null;
+    for (var i = 0; i < targets.length; i++) {
+      if (visible.has(targets[i].id)) { current = targets[i].id; break; }
+    }
+    // 长小节里可能一个标题都不在判定带内，这时保留上一个高亮，不要闪回无选中
+    if (!current) return;
+    links.forEach(function (a) { a.classList.remove('active'); });
+    if (map[current]) {
+      map[current].classList.add('active');
+      // 目录很长时把当前项滚进可视区
+      var body = document.getElementById('tocBody');
+      var a = map[current];
+      if (a.offsetTop < body.scrollTop || a.offsetTop > body.scrollTop + body.clientHeight - 40) {
+        body.scrollTop = a.offsetTop - body.clientHeight / 2;
+      }
+    }
+  }, { rootMargin: '-72px 0px -70% 0px', threshold: 0 });
+
+  targets.forEach(function (t) { io.observe(t); });
+})();
+</script>
+{{ end }}
 {{ end }}
