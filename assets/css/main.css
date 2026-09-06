@@ -1365,3 +1365,16 @@ main { position: relative; z-index: 1; flex: 1 0 auto; }
 @media (prefers-reduced-motion: reduce) {
   .music-btn.active .music-icon { animation: none; }
 }
+
+/* Daily hero infographic (from V小宝 / guige-infographic) */
+.article-hero {
+  margin: 20px 0 8px;
+  padding: 0;
+}
+.article-hero img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border, rgba(0,0,0,.08));
+  box-shadow: 0 8px 24px rgba(0,0,0,.06);
+}

@@ -112,12 +112,21 @@ def validate(data: dict) -> dict:
 
     title = str(data.get("title") or f"{d.isoformat()} AI 深读").strip()
 
+    hero = str(data.get("hero") or "").strip() or None
+    hero_alt = str(data.get("hero_alt") or "").strip() or None
+    if hero:
+        hero = hero.lstrip("/")  # relURL-friendly: img/daily/...
+        if not hero.startswith("img/daily/"):
+            raise Invalid("hero 须形如 img/daily/YYYY-MM-DD-infographic.png")
+
     return {
         "date": d,
         "title": title,
         "summary": summary,
         "tags": dedup(data.get("tags") or [], MAX_TAGS),
         "sources": dedup(data.get("sources") or []),
+        "hero": hero,
+        "hero_alt": hero_alt,
         "body_markdown": body,
         "body_chars": len(compact),
     }
@@ -135,6 +144,10 @@ def render(b: dict) -> str:
         fm.append(
             "tags: [" + ", ".join(q(t, ensure_ascii=False) for t in b["tags"]) + "]"
         )
+    if b.get("hero"):
+        fm.append(f"hero: {q(b['hero'], ensure_ascii=False)}")
+        if b.get("hero_alt"):
+            fm.append(f"hero_alt: {q(b['hero_alt'], ensure_ascii=False)}")
     if b["sources"]:
         fm.append(
             "sources: ["

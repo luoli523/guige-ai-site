@@ -51,6 +51,30 @@
 
 `sources` 字段如实列出当天实际用到的渠道短名（如 `github.com`、`huggingface.co`、`arxiv.org`）。同一事件多源合并；二手传闻标 **待核** 或丢弃。
 
+
+
+## 每日配图（V小宝）
+
+正文定稿后、**单次** `new_brief.py` 推送之前，由 **V小宝** 根据当天 `body_markdown` 生成一张鬼哥信息图，并挂到当日页。
+
+### 产出约定
+- 技能：`guige-infographic`（默认 `dense-modules` + `guige-journal`，16:9，中文）
+- 文件落盘：`static/img/daily/YYYY-MM-DD-infographic.png`
+- front matter（由 JSON 传入 `new_brief.py`）：
+  - `hero: "img/daily/YYYY-MM-DD-infographic.png"`
+  - `hero_alt: "……"`（简短中文说明）
+- 模板在标题/摘要/标签下方自动渲染 hero，**不要**在正文里再手写一遍同图，也**不要**手写目录
+
+### 总管流程（与四路信源一样：齐了再发）
+1. 四路信源齐 → 写深读 JSON（尚可不含 hero）
+2. 把定稿 md/要点发给 V小宝生成配图；**等图到位**
+3. 把 png 拷进 `static/img/daily/`，JSON 补上 `hero` / `hero_alt`
+4. `git pull` → `new_brief.py --commit --push`（或 `--force`）**只推一次**
+5. 对用户只通知 daily 链接一次
+
+缺图时：可先不上 hero（字段省略），但默认目标是「每天有图」。勿边到边刷。
+
+
 ## 报告结构（强制）
 
 先满足[渲染契约](#渲染契约不可改动)的四条，再按下面组织内容。

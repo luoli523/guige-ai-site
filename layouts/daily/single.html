@@ -24,6 +24,12 @@
         {{ end }}
       </div>
     {{ end }}
+
+    {{ with .Params.hero }}
+      <figure class="article-hero">
+        <img src="{{ . | relURL }}" alt="{{ $.Params.hero_alt | default $.Title }}" loading="lazy" decoding="async" />
+      </figure>
+    {{ end }}
   </header>
 
   {{/* 长文目录：右上角浮窗，跟随阅读高亮当前小节。短简报不显示 */}}
