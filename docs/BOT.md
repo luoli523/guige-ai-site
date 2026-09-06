@@ -55,11 +55,19 @@
 
 ## 每日配图（V小宝）
 
-正文定稿后、**单次** `new_brief.py` 推送之前，由 **V小宝** 根据当天 `body_markdown` 生成一张鬼哥信息图，并挂到当日页。
+正文定稿后、**单次** `new_brief.py` 推送之前，由 **AI学习总管** 根据当天内容自行选择合适的 **guige-*** skill 与风格/布局，再派 **V小宝** 出图，并挂到当日页。
+
+### 选型（总管决定，不要写死）
+按主线题材选技能与样式，例如：
+- 多模块速览 / 发布日雷达 → `guige-infographic`（layout/style 自选，如 dense-modules、guige-journal 等）
+- 概念梳理、手绘知识卡 → `guige-hand-write-pic`
+- 架构/流程/对照表 → `guige-svg`
+- 产品/结构拆解 → `guige-disassembly-diagram`
+- 需要多页讲解 → `guige-slides`（取关键一页作 hero，或另约定）
+派给 V小宝时写清：**用哪个 skill、layout/style/aspect/lang、要强调的 3–7 个要点**。不要默认锁死某一种。
 
 ### 产出约定
-- 技能：`guige-infographic`（默认 `dense-modules` + `guige-journal`，16:9，中文）
-- 文件落盘：`static/img/daily/YYYY-MM-DD-infographic.png`
+- 文件落盘：`static/img/daily/YYYY-MM-DD-infographic.png`（文件名沿用；内容可以是信息图/手绘/SVG 导出 PNG 等）
 - front matter（由 JSON 传入 `new_brief.py`）：
   - `hero: "img/daily/YYYY-MM-DD-infographic.png"`
   - `hero_alt: "……"`（简短中文说明）
@@ -67,7 +75,7 @@
 
 ### 总管流程（与四路信源一样：齐了再发）
 1. 四路信源齐 → 写深读 JSON（尚可不含 hero）
-2. 把定稿 md/要点发给 V小宝生成配图；**等图到位**
+2. 总管选题型与风格 → 发给 V小宝出图；**等图到位**
 3. 把 png 拷进 `static/img/daily/`，JSON 补上 `hero` / `hero_alt`
 4. `git pull` → `new_brief.py --commit --push`（或 `--force`）**只推一次**
 5. 对用户只通知 daily 链接一次
