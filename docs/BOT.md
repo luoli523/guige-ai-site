@@ -57,14 +57,13 @@
 
 正文定稿后、**单次** `new_brief.py` 推送之前，由 **AI学习总管** 根据当天内容自行选择合适的 **guige-*** skill 与风格/布局，再派 **V小宝** 出图，并挂到当日页。
 
-### 选型（总管决定，不要写死）
-按主线题材选技能与样式，例如：
-- 多模块速览 / 发布日雷达 → `guige-infographic`（layout/style 自选，如 dense-modules、guige-journal 等）
+### 选型（总管决定）
+**约 50% 概率使用 `guige-infographic`**（layout/style 仍可自选，如 dense-modules、guige-journal 等）；其余约 50% 再按主线题材选其他技能，例如：
 - 概念梳理、手绘知识卡 → `guige-hand-write-pic`
 - 架构/流程/对照表 → `guige-svg`
 - 产品/结构拆解 → `guige-disassembly-diagram`
 - 需要多页讲解 → `guige-slides`（取关键一页作 hero，或另约定）
-派给 V小宝时写清：**用哪个 skill、layout/style/aspect/lang、要强调的 3–7 个要点**。不要默认锁死某一种。
+派给 V小宝时写清：**用哪个 skill、layout/style/aspect/lang、要强调的 3–7 个要点**。不要每天锁死同一种非 infographic 默认。
 
 ### 产出约定
 - 文件落盘：**`assets/img/daily/YYYY-MM-DD-infographic.png`**（注意是 `assets/` 不是 `static/`）
