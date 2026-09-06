@@ -1366,15 +1366,78 @@ main { position: relative; z-index: 1; flex: 1 0 auto; }
   .music-btn.active .music-icon { animation: none; }
 }
 
-/* Daily hero infographic (from V小宝 / guige-infographic) */
+/* ============================================================
+   每日配图（guige-infographic 产出）与点击放大
+============================================================ */
 .article-hero {
   margin: 20px 0 8px;
   padding: 0;
 }
+
 .article-hero img {
   width: 100%;
   height: auto;
   border-radius: var(--radius-md);
-  border: 1px solid var(--border, rgba(0,0,0,.08));
-  box-shadow: 0 8px 24px rgba(0,0,0,.06);
+  border: 1px solid var(--border);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+  cursor: zoom-in;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.article-hero img:hover,
+.article-hero img:focus-visible {
+  border-color: var(--border-hover);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  outline: none;
+}
+
+.hero-zoom {
+  position: fixed;
+  inset: 0;
+  z-index: 9500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.92);
+  backdrop-filter: blur(4px);
+  cursor: zoom-out;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.hero-zoom.open { opacity: 1; pointer-events: auto; }
+
+.hero-zoom-img {
+  max-width: 96vw;
+  max-height: 92vh;
+  width: auto;
+  height: auto;
+  border-radius: var(--radius-sm);
+  transform: scale(0.96);
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.hero-zoom.open .hero-zoom-img { transform: scale(1); }
+
+.hero-zoom-close {
+  position: absolute;
+  z-index: 2;              /* 大图带 transform，会自成层叠上下文并盖住关闭键 */
+  top: 20px; right: 24px;
+  width: 40px; height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+}
+.hero-zoom-close:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-zoom, .hero-zoom-img { transition: none; }
 }

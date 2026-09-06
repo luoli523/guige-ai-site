@@ -25,10 +25,30 @@
       </div>
     {{ end }}
 
+    {{/* 每日配图。放在 assets/ 下走 Hugo Pipes：构建时转 WebP（约为 PNG 的 12%）
+         并带上真实宽高避免加载时跳版。首屏元素，用 eager + 高优先级。
+         图若不在 assets/（比如临时落在 static/），退回直接引用，不至于渲染不出来。 */}}
     {{ with .Params.hero }}
-      <figure class="article-hero">
-        <img src="{{ . | relURL }}" alt="{{ $.Params.hero_alt | default $.Title }}" loading="lazy" decoding="async" />
-      </figure>
+      {{ $alt := $.Params.hero_alt | default $.Title }}
+      {{ $src := . }}
+      {{ $res := resources.Get $src }}
+      {{ with $res }}
+        {{ $img := .Process "webp q82" }}
+        <figure class="article-hero">
+          <img src="{{ $img.RelPermalink }}" alt="{{ $alt }}"
+               width="{{ $img.Width }}" height="{{ $img.Height }}"
+               loading="eager" fetchpriority="high" decoding="async"
+               data-zoom="{{ $img.RelPermalink }}"
+               role="button" tabindex="0" aria-label="点击查看大图：{{ $alt }}" />
+        </figure>
+      {{ else }}
+        <figure class="article-hero">
+          <img src="{{ $src | relURL }}" alt="{{ $alt }}"
+               loading="eager" fetchpriority="high" decoding="async"
+               data-zoom="{{ $src | relURL }}"
+               role="button" tabindex="0" aria-label="点击查看大图：{{ $alt }}" />
+        </figure>
+      {{ end }}
     {{ end }}
   </header>
 
@@ -68,6 +88,73 @@
     {{ end }}
   </nav>
 </div>
+
+{{ if .Params.hero }}
+<div class="hero-zoom" id="heroZoom" role="dialog" aria-modal="true" aria-label="配图大图">
+  <button class="hero-zoom-close" id="heroZoomClose" aria-label="关闭大图">✕</button>
+  <img class="hero-zoom-img" id="heroZoomImg" src="" alt="" />
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var hero = document.querySelector('.article-hero img[data-zoom]');
+  if (!hero) return;
+
+  // 浮层标记在本脚本之后才解析，元素一律惰性取
+  function el(id) { return document.getElementById(id); }
+
+  function open() {
+    var box = el('heroZoom'), img = el('heroZoomImg');
+    if (!box || !img) return;
+    img.src = hero.dataset.zoom;
+    img.alt = hero.alt || '';
+    box.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    var close = el('heroZoomClose');
+    if (close) close.focus();
+  }
+
+  function close() {
+    var box = el('heroZoom');
+    if (!box) return;
+    box.classList.remove('open');
+    document.body.style.overflow = '';
+    hero.focus();
+  }
+
+  hero.addEventListener('click', open);
+  hero.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
+  });
+
+  function bind() {
+    var box = el('heroZoom'), btn = el('heroZoomClose');
+    if (!box || !btn) return;
+
+    // <main> 是 position:relative + z-index:1，自成层叠上下文，
+    // 浮层留在里面会被 z-index:100 的导航栏盖住。挪到 body 下才真正在最上层。
+    if (box.parentNode !== document.body) document.body.appendChild(box);
+
+    btn.addEventListener('click', close);
+    box.addEventListener('click', function (e) {
+      if (e.target !== btn) close();   // 点遮罩或大图都关掉
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bind);
+  } else {
+    bind();
+  }
+
+  document.addEventListener('keydown', function (e) {
+    var box = el('heroZoom');
+    if (e.key === 'Escape' && box && box.classList.contains('open')) close();
+  });
+})();
+</script>
+{{ end }}
 
 {{ if gt .WordCount 800 }}
 <script>

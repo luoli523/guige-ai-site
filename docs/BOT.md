@@ -67,16 +67,19 @@
 派给 V小宝时写清：**用哪个 skill、layout/style/aspect/lang、要强调的 3–7 个要点**。不要默认锁死某一种。
 
 ### 产出约定
-- 文件落盘：`static/img/daily/YYYY-MM-DD-infographic.png`（文件名沿用；内容可以是信息图/手绘/SVG 导出 PNG 等）
+- 文件落盘：**`assets/img/daily/YYYY-MM-DD-infographic.png`**（注意是 `assets/` 不是 `static/`）
+  - 放在 `assets/` 下，Hugo 构建时会自动转 WebP（约为 PNG 的 12%：2.1MB → 0.26MB）并写入真实宽高，
+    避免图片压垮页面、也避免加载时跳版。落在 `static/` 只会原样输出 PNG
+  - 文件名沿用；内容可以是信息图/手绘/SVG 导出 PNG 等
 - front matter（由 JSON 传入 `new_brief.py`）：
   - `hero: "img/daily/YYYY-MM-DD-infographic.png"`
   - `hero_alt: "……"`（简短中文说明）
-- 模板在标题/摘要/标签下方自动渲染 hero，**不要**在正文里再手写一遍同图，也**不要**手写目录
+- 模板在标题/摘要/标签下方自动渲染 hero（读者点击可看大图），**不要**在正文里再手写一遍同图，也**不要**手写目录
 
 ### 总管流程（与四路信源一样：齐了再发）
 1. 四路信源齐 → 写深读 JSON（尚可不含 hero）
 2. 总管选题型与风格 → 发给 V小宝出图；**等图到位**
-3. 把 png 拷进 `static/img/daily/`，JSON 补上 `hero` / `hero_alt`
+3. 把 png 拷进 `assets/img/daily/`，JSON 补上 `hero` / `hero_alt`
 4. `git pull` → `new_brief.py --commit --push`（或 `--force`）**只推一次**
 5. 对用户只通知 daily 链接一次
 
@@ -187,7 +190,8 @@ echo "$BRIEF_JSON" | python3 scripts/new_brief.py --check
 2. **时区 Asia/Singapore。** `date` 只给 `YYYY-MM-DD`，脚本补 `T08:00:00+08:00`。  
 3. **幂等。** 当天文件已存在 → 退出码 2；覆盖需 `--force`。  
 4. **push 前先 `git pull --ff-only origin main`。**  
-5. **不要碰 `content/daily/` 以外的文件**（改主题/布局另开 PR）。  
+5. **可以改模板与样式**（`layouts/`、`assets/css/`），但改完必须本地 `hugo --minify` 构建通过才提交；
+   构建挂了就回滚，不要把坏掉的站推上线。`docs/BOT.md` 的[渲染契约](#渲染契约不可改动)四条仍不可动。  
 
 ---
 
