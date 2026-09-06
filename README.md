@@ -41,42 +41,20 @@ content/
 
 ## 内容契约（bot 的输出规范）
 
-文件路径固定为 `content/daily/YYYY-MM-DD.md`，URL 自动为 `/daily/YYYY-MM-DD/`。
+**唯一标准：深读报告。** 详见 **[docs/BOT.md](docs/BOT.md)**（可直接当 bot system prompt）。
 
-```yaml
----
-title: "2026-09-05 AI 要闻"          # 必填
-date: 2026-09-05T08:00:00+08:00      # 必填，带时区，决定排序与 URL
-summary: "一句话概括今天最重要的事"    # 选填，缺省时自动截取正文
-tags: ["Anthropic", "开源模型"]       # 选填，缺省时不渲染标签行
-sources: ["x.com", "techcrunch"]     # 选填，缺省时不渲染信源行
----
-
-## 模型与产品
-- **条目标题** — 一句话说清发生了什么、为什么值得注意。[来源](https://…)
-
-## 公司与资本
-## 技术与论文
-## 政策与生态
-```
-
-正文结构不强约束，分类小标题用 `##`，条目用 `-` 列表、加粗开头、末尾附来源链接即可。**只有 `title` 和 `date` 是硬要求**，其余字段缺失时模板会自动降级，bot 零改动也能跑。
-
-新建一篇（人工）：
+- 文件：`content/daily/YYYY-MM-DD.md` → URL `/daily/YYYY-MM-DD/`
+- 输入：JSON，必填 `summary` + `body_markdown`（完整深读 Markdown）
+- 结构：执行摘要 · 2–4 主线深度解析（FACT/官方自报/待核）· 次要动态 · 来源 · 行动建议
+- 深度下限：正文去空白 ≥ 2500 字；旧版短讯 `sections/items` schema 已废弃
 
 ```bash
-hugo new content/daily/$(date +%F).md --kind daily
+echo "$BRIEF_JSON" | python3 scripts/new_brief.py --check
+echo "$BRIEF_JSON" | python3 scripts/new_brief.py --commit --push
 ```
 
-bot 走脚本，不要自己拼 front matter —— 产出 JSON 交给 `scripts/new_brief.py`，
-它负责校验、转义、补时区、跑一次 Hugo 构建确认没问题，再提交推送：
+首页卡片仍用 `summary`；正文为长文深读，不再是一句话新闻列表。
 
-```bash
-echo "$BRIEF_JSON" | python3 scripts/new_brief.py --check          # 只校验
-echo "$BRIEF_JSON" | python3 scripts/new_brief.py --commit --push  # 落盘并发布
-```
-
-完整规范见 **[docs/BOT.md](docs/BOT.md)**（可直接当 bot 的 system prompt）。
 
 ## 本地开发
 
@@ -90,7 +68,7 @@ hugo --minify          # 生产构建到 public/
 ## 待办
 
 - [ ] 「关于本站」页的信源清单与筛选标准换成实际内容
-- [ ] 接入 bot：按 [docs/BOT.md](docs/BOT.md) 配好写权限与定时任务
+- [x] 接入 bot：按 [docs/BOT.md](docs/BOT.md) 深读契约；写权限与定时由 Grok Bot 早报 routine 执行
 - [ ] 删除 `content/daily/` 下三篇 `【示例】` 占位简报
 - [ ] 主站首页新增「每日 AI 要闻」板块，消费本站 `index.xml` 或产出的 JSON
 
