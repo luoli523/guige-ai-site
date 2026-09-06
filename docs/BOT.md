@@ -18,7 +18,7 @@
    （模板有 render hook 会把正文 H1 强制降级为 H2 兜底，但别依赖它。）
 2. **不要手写目录。** 站点对超过 800 字的文章自动生成带锚点的目录。
    手写的那份既点不动、又会和自动目录并排重复。
-3. **时区一律写 `Asia/Shanghai`。** 不写 `Asia/Singapore` 或其他等价写法。
+3. **时区一律写 `Asia/Singapore`。** 不写 `Asia/Shanghai` 或其他等价写法。
    `date` 字段只给 `YYYY-MM-DD`，`T08:00:00+08:00` 由脚本补。
 4. **文件路径固定 `content/daily/YYYY-MM-DD.md`，一天一篇。**
    路径和命名规则改动会同时破坏 URL、归档分组和首页排序。
@@ -125,7 +125,7 @@ echo "$BRIEF_JSON" | python3 scripts/new_brief.py --check
 
 | 字段 | 必填 | 说明 |
 |---|---|---|
-| `date` | 否 | `YYYY-MM-DD`。省略则用 **Asia/Shanghai** 今天。不可过远未来 |
+| `date` | 否 | `YYYY-MM-DD`。省略则用 **Asia/Singapore** 今天。不可过远未来 |
 | `title` | 否 | 默认 `YYYY-MM-DD AI 深读` |
 | `summary` | **是** | 首页卡片摘要；不可空 |
 | `tags` | 建议 | ≤8，去重；公司/主题 |
@@ -152,7 +152,7 @@ echo "$BRIEF_JSON" | python3 scripts/new_brief.py --check
 ## 硬规则
 
 1. **不发空报告。** 深读不够格（长度/结构不达标）当天不发。  
-2. **时区 Asia/Shanghai。** `date` 只给 `YYYY-MM-DD`，脚本补 `T08:00:00+08:00`。  
+2. **时区 Asia/Singapore。** `date` 只给 `YYYY-MM-DD`，脚本补 `T08:00:00+08:00`。  
 3. **幂等。** 当天文件已存在 → 退出码 2；覆盖需 `--force`。  
 4. **push 前先 `git pull --ff-only origin main`。**  
 5. **不要碰 `content/daily/` 以外的文件**（改主题/布局另开 PR）。  

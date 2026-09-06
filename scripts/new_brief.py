@@ -25,7 +25,7 @@ from datetime import date, datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
-TZ = ZoneInfo("Asia/Shanghai")
+TZ = ZoneInfo("Asia/Singapore")
 REPO = Path(__file__).resolve().parent.parent
 CONTENT_DIR = REPO / "content" / "daily"
 

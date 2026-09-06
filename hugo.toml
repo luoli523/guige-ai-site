@@ -5,7 +5,7 @@ title = '鬼哥的 AI 行业动态'
 enableRobotsTXT = true
 enableEmoji = true
 hasCJKLanguage = true   # 中文按字数统计，否则 ReadingTime 会严重低估
-timeZone = 'Asia/Shanghai'
+timeZone = 'Asia/Singapore'
 
 [pagination]
   pagerSize = 15
