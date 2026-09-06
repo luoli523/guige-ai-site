@@ -26,6 +26,14 @@
     {{ end }}
   </header>
 
+  {{/* 长文自动生成目录；短简报不显示 */}}
+  {{ if gt .WordCount 800 }}
+    <nav class="toc" aria-label="目录">
+      <div class="toc-label">目录</div>
+      {{ .TableOfContents }}
+    </nav>
+  {{ end }}
+
   <article class="prose">
     {{ .Content }}
   </article>

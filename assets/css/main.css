@@ -1175,3 +1175,41 @@ main { position: relative; z-index: 1; flex: 1 0 auto; }
   .chat-fab.nudge { animation: none; }
   .chat-hint .arrow { animation: none; }
 }
+
+/* ============================================================
+   长文目录
+============================================================ */
+.toc {
+  margin-bottom: 40px;
+  padding: 20px 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+}
+
+.toc-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+
+.toc ul { list-style: none; margin: 0; padding: 0; }
+.toc ul ul { margin: 2px 0 6px 16px; }
+
+.toc li { margin: 1px 0; }
+
+.toc a {
+  display: inline-block;
+  padding: 2px 0;
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  border-bottom: 1px solid transparent;
+  transition: color var(--transition), border-color var(--transition);
+}
+.toc a:hover { color: var(--teal); border-bottom-color: var(--teal); }
+
+.toc ul ul a { font-size: 0.82rem; color: var(--text-muted); }
