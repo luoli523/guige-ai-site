@@ -1,0 +1,52 @@
+{{ define "main" }}
+{{ $base := site.Home.RelPermalink }}
+
+<div class="wrap">
+  <header class="page-head reveal">
+    <div class="eyebrow">Search</div>
+    <h1 class="page-title">搜索</h1>
+    <p class="page-desc">全文检索所有简报正文。索引在构建时生成，按需加载，不影响其它页面。</p>
+  </header>
+
+  <section class="section">
+    <div id="searchbox" class="pagefind-host"></div>
+    <noscript><p class="empty">搜索需要 JavaScript。你也可以直接翻 <a href="{{ (site.GetPage "/daily").RelPermalink }}">全部归档</a>。</p></noscript>
+  </section>
+</div>
+
+<link href="{{ $base }}pagefind/pagefind-ui.css" rel="stylesheet" />
+<script src="{{ $base }}pagefind/pagefind-ui.js"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', function () {
+    if (typeof PagefindUI === 'undefined') {
+      document.getElementById('searchbox').innerHTML =
+        '<p class="empty">搜索索引还没生成。本地预览请跑：<br><code>hugo --minify &amp;&amp; npx pagefind --site public &amp;&amp; npx serve public</code></p>';
+      return;
+    }
+
+    var ui = new PagefindUI({
+      element: '#searchbox',
+      showSubResults: true,
+      showImages: false,
+      excerptLength: 30,
+      translations: {
+        placeholder: '搜索简报正文…',
+        clear_search: '清空',
+        load_more: '加载更多结果',
+        search_label: '搜索本站',
+        filters_label: '筛选',
+        zero_results: '没有匹配 [SEARCH_TERM] 的内容',
+        many_results: '找到 [COUNT] 条与 [SEARCH_TERM] 相关',
+        one_result: '找到 1 条与 [SEARCH_TERM] 相关',
+        alt_search: '没有 [SEARCH_TERM] 的结果，改为显示 [DIFFERENT_TERM] 的结果',
+        search_suggestion: '没有 [SEARCH_TERM] 的结果，试试这些词',
+        searching: '正在搜索 [SEARCH_TERM]…'
+      }
+    });
+
+    // 导航栏的搜索框跳到这里时带 ?q=，直接把词灌进去
+    var q = new URLSearchParams(location.search).get('q');
+    if (q) ui.triggerSearch(q);
+  });
+</script>
+{{ end }}

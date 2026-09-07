@@ -3,6 +3,28 @@
 
 <div class="wrap">
   <header class="article-head">
+    {{/* 证据标注徽章：直接数正文里三级标签的出现次数。
+         不写「已核对」—— 本站内容没有逐条人工核实，那样是假声明；
+         把 FACT / 官方自报 / 待核 的密度摊给读者，比两档「已核对/立场提示」更诚实。
+         从 RawContent 现算，存量文章无需 bot 配合即生效。 */}}
+    {{ $raw  := .RawContent }}
+    {{ $fact := strings.Count "FACT" $raw }}
+    {{ $self := strings.Count "官方自报" $raw }}
+    {{ $todo := strings.Count "待核" $raw }}
+
+    {{ if or $fact $self $todo }}
+      <div class="evidence-bar" aria-label="证据标注统计">
+        <span class="ev-label">证据标注</span>
+        {{ with $fact }}<span class="ev ev-fact" title="可用官方文档或一手来源交叉确认">FACT <b>{{ . }}</b></span>{{ end }}
+        {{ with $self }}<span class="ev ev-self" title="厂商自己的评测或宣传数字">官方自报 <b>{{ . }}</b></span>{{ end }}
+        {{ with $todo }}<span class="ev ev-todo" title="二手转述或未独立核验">待核 <b>{{ . }}</b></span>{{ end }}
+        {{ with .Params.sources }}
+          <span class="ev-sep" aria-hidden="true"></span>
+          <span class="ev-src">{{ len . }} 个信源</span>
+        {{ end }}
+      </div>
+    {{ end }}
+
     <div class="article-meta">
       <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006 年 01 月 02 日" }}</time>
       <span>{{ $wd }}</span>
@@ -69,7 +91,7 @@
     </nav>
   {{ end }}
 
-  <article class="prose">
+  <article class="prose" data-pagefind-body>
     {{ .Content }}
   </article>
 

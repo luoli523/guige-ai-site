@@ -1,6 +1,7 @@
 {{ $home  := .Site.Home.RelPermalink }}
 {{ $daily := (site.GetPage "/daily").RelPermalink }}
 {{ $about := (site.GetPage "/about").RelPermalink }}
+{{ $search := (site.GetPage "/search").RelPermalink }}
 
 <nav class="nav" role="navigation" aria-label="主导航">
   <a href="{{ $home }}" class="nav-logo" aria-label="{{ .Site.Title }} 首页">
@@ -13,6 +14,13 @@
     <li><a href="{{ $about }}"{{ if eq .RelPermalink $about }} class="active"{{ end }}>关于</a></li>
     <li><a href="{{ .Site.Params.mainSite }}" target="_blank" rel="noopener">鬼哥的空间 ↗</a></li>
   </ul>
+
+  <form class="nav-search" action="{{ $search }}" method="get" role="search">
+    <svg class="nav-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+      <circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/>
+    </svg>
+    <input type="search" name="q" placeholder="搜索简报…" aria-label="搜索简报" autocomplete="off" />
+  </form>
 
   <button class="music-btn" id="musicToggle" aria-label="播放音乐" title="看累了听个音乐吧">
     <span class="music-icon">🎵</span>

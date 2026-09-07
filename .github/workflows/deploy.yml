@@ -36,6 +36,10 @@ jobs:
       - name: Build
         run: hugo --minify
 
+      # 搜索索引：扫描构建产物生成分片索引，按需懒加载（只有 /search/ 会拉）
+      - name: Build search index
+        run: npx --yes pagefind@1.5.2 --site public
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
