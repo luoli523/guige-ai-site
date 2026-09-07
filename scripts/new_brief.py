@@ -34,11 +34,14 @@ MAX_TAGS = 8
 MIN_BODY_CHARS = 2500
 REQUIRED_SEMANTICS = (
     ("今日导读", ("今日导读", "导读")),
+    ("行动建议", ("学习与行动", "行动建议", "今日行动")),
+)
+# 权威/开源/模型/大V 四块按需出现，不强制齐全（无料可整节省略）
+OPTIONAL_PANELS = (
     ("权威行业动态", ("权威行业动态",)),
     ("开源项目跟踪", ("开源项目", "GitHub", "Github")),
     ("模型相关动态", ("业界模型", "Hugging Face", "HuggingFace", "模型相关")),
     ("大V与实践", ("大V", "热门实践", "业界热门实践")),
-    ("行动建议", ("学习与行动", "行动建议", "今日行动")),
 )
 
 # 权威行业动态厂商分列（有料才写；无料跳过，不强制齐全）
@@ -114,7 +117,7 @@ def validate(data: dict) -> dict:
     if len(compact) < MIN_BODY_CHARS:
         raise Invalid(
             f"正文过短：去空白后 {len(compact)} 字符，下限 {MIN_BODY_CHARS}。"
-            "请按 docs/BOT.md 四板块结构写满（导读 + 权威/开源/模型/大V + 行动建议）。"
+            "请按 docs/BOT.md 写深（导读 + 按需内容板块 + 行动建议；全天约 3–5 条重点）。"
         )
 
     for label, keys in REQUIRED_SEMANTICS:
@@ -122,6 +125,11 @@ def validate(data: dict) -> dict:
             raise Invalid(
                 f"正文缺少「{label}」相关标题（需包含其一：{', '.join(keys)}）"
             )
+
+    if not any(any(k in body for k in keys) for _, keys in OPTIONAL_PANELS):
+        raise Invalid(
+            "正文至少需要一个内容板块（权威行业动态 / 开源项目跟踪 / 业界模型相关动态 / 大V与实践）"
+        )
 
 
     title = str(data.get("title") or f"{d.isoformat()} AI行业动态").strip()
