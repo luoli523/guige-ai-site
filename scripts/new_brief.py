@@ -33,10 +33,12 @@ DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 MAX_TAGS = 8
 MIN_BODY_CHARS = 2500
 REQUIRED_SEMANTICS = (
-    ("执行摘要", ("执行摘要",)),
-    ("主线/深度", ("主线", "深度解析")),
-    ("来源", ("来源", "延伸阅读")),
-    ("行动", ("行动建议", "今日行动", "行动")),
+    ("今日导读", ("今日导读", "导读")),
+    ("权威行业动态", ("权威行业动态",)),
+    ("开源项目跟踪", ("开源项目", "GitHub", "Github")),
+    ("模型相关动态", ("业界模型", "Hugging Face", "HuggingFace", "模型相关")),
+    ("大V与实践", ("大V", "热门实践", "业界热门实践")),
+    ("行动建议", ("学习与行动", "行动建议", "今日行动")),
 )
 
 
@@ -101,7 +103,7 @@ def validate(data: dict) -> dict:
     if len(compact) < MIN_BODY_CHARS:
         raise Invalid(
             f"正文过短：去空白后 {len(compact)} 字符，下限 {MIN_BODY_CHARS}。"
-            "请按 docs/BOT.md 深读结构写满主线解析。"
+            "请按 docs/BOT.md 四板块结构写满（导读 + 权威/开源/模型/大V + 行动建议）。"
         )
 
     for label, keys in REQUIRED_SEMANTICS:
