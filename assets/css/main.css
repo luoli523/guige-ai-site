@@ -635,6 +635,32 @@ main { position: relative; z-index: 1; flex: 1 0 auto; }
   scroll-margin-top: calc(var(--nav-h) + 20px);
 }
 
+.prose h4 {
+  position: relative;
+  margin: 28px 0 12px;
+  padding-left: 14px;
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--text-primary);
+  scroll-margin-top: calc(var(--nav-h) + 20px);
+}
+.prose h4::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0.62em;
+  width: 6px; height: 1px;
+  background: var(--teal-muted);
+}
+
+.prose h5, .prose h6 {
+  margin: 22px 0 10px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  scroll-margin-top: calc(var(--nav-h) + 20px);
+}
+
 .prose p { margin: 16px 0; color: var(--text-secondary); font-weight: 300; }
 .prose strong { color: var(--text-primary); font-weight: 700; }
 
