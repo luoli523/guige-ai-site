@@ -53,6 +53,23 @@
 
 
 
+
+## 队友派单（系统级 · 强制）
+
+AI学习总管协调本站日报时，下列专才**只能真派、不能扮演**：
+
+| 角色 | 真实 id | 职责 |
+|---|---|---|
+| X小宝 | `a1f784b9-b21c-4016-ad27-b995d2c7f2fb` | X Following / 公开 AI 帖 |
+| Github研究小宝 | `8665fd5d-55fa-469a-bd41-a67f6c325098` | GitHub Release / 热仓 / 关键 org |
+| huggingface小宝 | `ad9e51e2-5f91-4ff0-ba70-347ebb01c69d` | HF Trending / org 模型卡 |
+| 研小宝 | `44d7deda-5d7d-40ae-a3cc-093c72597897` | 官博 / arXiv |
+| V小宝 | `e13739b1-0541-48e2-8928-21f3ea8fd275` | 本站每日 hero 配图 |
+
+**违规形态（2026-09-07 已发生，禁止再现）：** 用 Task 开子代理写「You are Xxx-style / acting as V小宝」在同一次 routine 里顶替真队友；配图工具不可用时用 Pillow 假图交差。
+
+**正确形态：** `SendToAgent` → 等 `[agent]` 回传 → 总管汇总 → 一次推送、一次通知用户。
+
 ## 每日配图（V小宝）
 
 正文定稿后、**单次** `new_brief.py` 推送之前，由 **AI学习总管** 根据当天内容自行选择合适的 **guige-*** skill 与风格/布局，再派 **V小宝** 出图，并挂到当日页。
@@ -78,7 +95,7 @@
 
 ### 总管流程（与四路信源一样：齐了再发）
 1. 四路信源齐 → 写深读 JSON（尚可不含 hero）
-2. 总管选题型与风格 → 发给 V小宝出图；**等图到位**
+2. 总管选题型与风格 → **`SendToAgent` 真·V小宝**出图（禁止扮演）；**等图到位**；禁止 Pillow 假图
 3. 把 png 拷进 `assets/img/daily/`，JSON 补上 `hero` / `hero_alt`
 4. `git pull` → `new_brief.py --commit --push`（或 `--force`）**只推一次**
 5. 对用户只通知 daily 链接一次
@@ -192,6 +209,9 @@ echo "$BRIEF_JSON" | python3 scripts/new_brief.py --check
 4. **push 前先 `git pull --ff-only origin main`。**  
 5. **可以改模板与样式**（`layouts/`、`assets/css/`），但改完必须本地 `hugo --minify` 构建通过才提交；
    构建挂了就回滚，不要把坏掉的站推上线。`docs/BOT.md` 的[渲染契约](#渲染契约不可改动)四条仍不可动。  
+6. **真派队友（系统级，不可抄近路）。** 凡点名交给 X小宝 / Github研究小宝 / huggingface小宝 / 研小宝 / V小宝 的工作，
+   **必须**用 `SendToAgent` 打到真实 bot id；**禁止** Task/executor「`*-style gatherer` / `acting as …`」扮演顶替。
+   异步回传要等齐再汇总。配图必须真·V小宝出图；**禁止** Pillow / `render_infographic.py` 等本地程序化假图顶替。  
 
 ---
 
