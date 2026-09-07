@@ -214,7 +214,7 @@ echo "$BRIEF_JSON" | python3 scripts/new_brief.py --check
 ```json
 {
   "date": "2026-09-06",
-  "title": "可选；默认「YYYY-MM-DD AI 深读」",
+  "title": "可选；默认「YYYY-MM-DD AI行业动态」",
   "summary": "一句话首页卡片摘要（必填，建议 ≤80 字）",
   "tags": ["OpenAI", "安全对齐", "Astra", "MCP"],
   "sources": ["x.com", "openai.com", "collusion.wiki"],
@@ -225,7 +225,7 @@ echo "$BRIEF_JSON" | python3 scripts/new_brief.py --check
 | 字段 | 必填 | 说明 |
 |---|---|---|
 | `date` | 否 | `YYYY-MM-DD`。省略则用 **Asia/Singapore** 今天。不可过远未来 |
-| `title` | 否 | 默认 `YYYY-MM-DD AI 深读` |
+| `title` | 否 | 默认 `YYYY-MM-DD AI行业动态` |
 | `summary` | **是** | 首页卡片用一句摘要；正文另有「今日导读」列表。|
 | `tags` | 建议 | ≤8，去重；公司/主题 |
 | `sources` | 建议 | 信源渠道短名 |

@@ -124,7 +124,7 @@ def validate(data: dict) -> dict:
             )
 
 
-    title = str(data.get("title") or f"{d.isoformat()} AI 深读").strip()
+    title = str(data.get("title") or f"{d.isoformat()} AI行业动态").strip()
 
     hero = str(data.get("hero") or "").strip() or None
     hero_alt = str(data.get("hero_alt") or "").strip() or None
@@ -250,7 +250,7 @@ def main() -> None:
     if not (args.commit or args.push):
         return
 
-    msg = f"content: {brief['date'].isoformat()} AI 深读"
+    msg = f"content: {brief['date'].isoformat()} AI行业动态"
     r = run(["git", "add", str(path)])
     if r.returncode != 0:
         fail(4, f"git add 失败：{r.stderr}")
