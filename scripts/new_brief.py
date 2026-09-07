@@ -33,6 +33,7 @@ DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 MAX_TAGS = 8
 MIN_BODY_CHARS = 2500
 REQUIRED_SEMANTICS = (
+    ("一分钟速览", ("一分钟速览", "速览")),
     ("执行摘要", ("执行摘要", "导读")),
     ("主线/深度解析", ("主线", "深度解析")),
     ("来源", ("来源", "延伸阅读")),
@@ -108,6 +109,18 @@ def validate(data: dict) -> dict:
             raise Invalid(
                 f"正文缺少「{label}」相关标题（需包含其一：{', '.join(keys)}）"
             )
+
+    # 「一分钟速览」必须是第一个 ## 小节，且内容是无序列表 ——
+    # 站点靠标题 id 把它渲染成卡片，位置或形态不对就退化成普通小节。
+    # 见 docs/BOT.md 渲染契约第 5 条（不可改动）。
+    sections = re.findall(r"^##[^#].*$", body, re.M)
+    if sections and "速览" not in sections[0]:
+        raise Invalid(
+            f"第一个 ## 小节必须是「一分钟速览」，当前是「{sections[0].lstrip('# ').strip()}」"
+        )
+    m = re.search(r"^##[^#][^\n]*速览[^\n]*\n+(.*?)(?=^##[^#]|\Z)", body, re.M | re.S)
+    if m and not re.match(r"\s*[-*]\s", m.group(1)):
+        raise Invalid("「一分钟速览」的内容必须是无序列表（- 开头），不要写成段落")
 
 
     title = str(data.get("title") or f"{d.isoformat()} AI行业动态").strip()
