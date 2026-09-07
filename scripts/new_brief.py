@@ -33,28 +33,11 @@ DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 MAX_TAGS = 8
 MIN_BODY_CHARS = 2500
 REQUIRED_SEMANTICS = (
-    ("今日导读", ("今日导读", "导读")),
-    ("行动建议", ("学习与行动", "行动建议", "今日行动")),
+    ("执行摘要", ("执行摘要", "导读")),
+    ("主线/深度解析", ("主线", "深度解析")),
+    ("来源", ("来源", "延伸阅读")),
+    ("行动", ("行动建议", "今日行动", "学习与行动")),
 )
-# 权威/开源/模型/大V 四块按需出现，不强制齐全（无料可整节省略）
-OPTIONAL_PANELS = (
-    ("权威行业动态", ("权威行业动态",)),
-    ("开源项目跟踪", ("开源项目", "GitHub", "Github")),
-    ("模型相关动态", ("业界模型", "Hugging Face", "HuggingFace", "模型相关")),
-    ("大V与实践", ("大V", "热门实践", "业界热门实践")),
-)
-
-# 权威行业动态厂商分列（有料才写；无料跳过，不强制齐全）
-INDUSTRY_VENDORS = (
-    "OpenAI",
-    "Anthropic",
-    "Google",
-    "Meta AI",
-    "Nvidia",
-    "其他官博",
-    "arXiv",
-)
-
 
 class Invalid(Exception):
     """输入不合规。"""
@@ -125,11 +108,6 @@ def validate(data: dict) -> dict:
             raise Invalid(
                 f"正文缺少「{label}」相关标题（需包含其一：{', '.join(keys)}）"
             )
-
-    if not any(any(k in body for k in keys) for _, keys in OPTIONAL_PANELS):
-        raise Invalid(
-            "正文至少需要一个内容板块（权威行业动态 / 开源项目跟踪 / 业界模型相关动态 / 大V与实践）"
-        )
 
 
     title = str(data.get("title") or f"{d.isoformat()} AI行业动态").strip()
