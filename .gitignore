@@ -31,3 +31,6 @@ npm-debug.log*
 public/
 resources/
 .hugo_build.lock
+
+# 本地备忘，不提交
+NOTES.local.md
