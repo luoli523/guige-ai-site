@@ -41,6 +41,17 @@ REQUIRED_SEMANTICS = (
     ("行动建议", ("学习与行动", "行动建议", "今日行动")),
 )
 
+# 权威行业动态厂商分列（BOT 强制）
+INDUSTRY_VENDORS = (
+    "OpenAI",
+    "Anthropic",
+    "Google",
+    "Meta AI",
+    "Nvidia",
+    "其他官博",
+    "arXiv",
+)
+
 
 class Invalid(Exception):
     """输入不合规。"""
@@ -110,6 +121,15 @@ def validate(data: dict) -> dict:
         if not any(k in body for k in keys):
             raise Invalid(
                 f"正文缺少「{label}」相关标题（需包含其一：{', '.join(keys)}）"
+            )
+
+    if "权威行业动态" in body:
+        missing_v = [v for v in INDUSTRY_VENDORS if v not in body]
+        if missing_v:
+            raise Invalid(
+                "权威行业动态缺少厂商分列："
+                + "、".join(missing_v)
+                + "。请按 docs/BOT.md 列出 OpenAI/Anthropic/Google/Meta AI/Nvidia/其他官博/arXiv。"
             )
 
     title = str(data.get("title") or f"{d.isoformat()} AI 深读").strip()
