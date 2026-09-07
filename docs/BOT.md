@@ -62,7 +62,7 @@ AI学习总管协调本站日报时，下列专才**只能真派、不能扮演*
 |---|---|---|
 | X小宝 | `a1f784b9-b21c-4016-ad27-b995d2c7f2fb` | X Following / 公开 AI 帖 |
 | Github研究小宝 | `8665fd5d-55fa-469a-bd41-a67f6c325098` | GitHub Release / 热仓 / 关键 org |
-| huggingface小宝 | `ad9e51e2-5f91-4ff0-ba70-347ebb01c69d` | HF Trending / org 模型卡 |
+| 模型小宝 | `ad9e51e2-5f91-4ff0-ba70-347ebb01c69d` | HF Trending / org 模型卡 |
 | 研小宝 | `44d7deda-5d7d-40ae-a3cc-093c72597897` | 官博 / arXiv |
 | V小宝 | `e13739b1-0541-48e2-8928-21f3ea8fd275` | 本站每日 hero 配图 |
 
@@ -142,7 +142,7 @@ AI学习总管协调本站日报时，下列专才**只能真派、不能扮演*
 |---|---|---|---|
 | 1 | `## 权威行业动态` | **研小宝** | 见下方「权威行业动态 · 厂商分列」 |
 | 2 | `## 热门 AI 开源项目跟踪` | **Github研究小宝** | Release、热仓、关键 org 动态 |
-| 3 | `## 业界模型相关动态` | **huggingface小宝** | Trending / 新模型卡 / 量化与数据集等；区分「窗口内更新」与「仅热度」 |
+| 3 | `## 业界模型相关动态` | **模型小宝** | Trending / 新模型卡 / 量化与数据集等；区分「窗口内更新」与「仅热度」 |
 | 4 | `## AI 大V 观点与业界热门实践` | **X小宝** | Following + 公开高信号实践/观点；演示完整度标待核 |
 
 #### 权威行业动态 · 厂商分列（强制）
@@ -256,7 +256,7 @@ echo "$BRIEF_JSON" | python3 scripts/new_brief.py --check
 4. **push 前先 `git pull --ff-only origin main`。**  
 5. **可以改模板与样式**（`layouts/`、`assets/css/`），但改完必须本地 `hugo --minify` 构建通过才提交；
    构建挂了就回滚，不要把坏掉的站推上线。`docs/BOT.md` 的[渲染契约](#渲染契约不可改动)四条仍不可动。  
-6. **真派队友（系统级，不可抄近路）。** 凡点名交给 X小宝 / Github研究小宝 / huggingface小宝 / 研小宝 / V小宝 的工作，
+6. **真派队友（系统级，不可抄近路）。** 凡点名交给 X小宝 / Github研究小宝 / 模型小宝 / 研小宝 / V小宝 的工作，
    **必须**用 `SendToAgent` 打到真实 bot id；**禁止** Task/executor「`*-style gatherer` / `acting as …`」扮演顶替。
    异步回传要等齐再汇总。配图必须真·V小宝出图；**禁止** Pillow / `render_infographic.py` 等本地程序化假图顶替。  
 
