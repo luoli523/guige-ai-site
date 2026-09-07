@@ -41,7 +41,7 @@ REQUIRED_SEMANTICS = (
     ("行动建议", ("学习与行动", "行动建议", "今日行动")),
 )
 
-# 权威行业动态厂商分列（BOT 强制）
+# 权威行业动态厂商分列（有料才写；无料跳过，不强制齐全）
 INDUSTRY_VENDORS = (
     "OpenAI",
     "Anthropic",
@@ -123,14 +123,6 @@ def validate(data: dict) -> dict:
                 f"正文缺少「{label}」相关标题（需包含其一：{', '.join(keys)}）"
             )
 
-    if "权威行业动态" in body:
-        missing_v = [v for v in INDUSTRY_VENDORS if v not in body]
-        if missing_v:
-            raise Invalid(
-                "权威行业动态缺少厂商分列："
-                + "、".join(missing_v)
-                + "。请按 docs/BOT.md 列出 OpenAI/Anthropic/Google/Meta AI/Nvidia/其他官博/arXiv。"
-            )
 
     title = str(data.get("title") or f"{d.isoformat()} AI 深读").strip()
 
