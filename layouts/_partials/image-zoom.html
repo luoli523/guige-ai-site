@@ -1,0 +1,59 @@
+{{/* 共享的图片放大浮层。挂在 baseof 里、<main> 之外 ——
+     <main> 是 position:relative + z-index:1，自成层叠上下文，
+     浮层放在里面会被 z-index:100 的导航栏盖住。
+     用法：window.ggZoom(src, alt) */}}
+<div class="img-zoom" id="imgZoom" role="dialog" aria-modal="true" aria-label="查看大图">
+  <button class="img-zoom-close" id="imgZoomClose" aria-label="关闭大图">✕</button>
+  <img class="img-zoom-img" id="imgZoomImg" src="" alt="" />
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var box = document.getElementById('imgZoom');
+  var img = document.getElementById('imgZoomImg');
+  var btn = document.getElementById('imgZoomClose');
+  if (!box || !img || !btn) return;
+
+  var lastFocus = null;
+
+  window.ggZoom = function (src, alt, origin) {
+    if (!src) return;
+    lastFocus = origin || document.activeElement;
+    img.src = src;
+    img.alt = alt || '';
+    box.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    btn.focus();
+  };
+
+  function close() {
+    box.classList.remove('open');
+    document.body.style.overflow = '';
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  btn.addEventListener('click', close);
+  box.addEventListener('click', function (e) {
+    if (e.target !== btn) close();     // 点遮罩或大图都关掉
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && box.classList.contains('open')) close();
+  });
+
+  // 卡片里的缩略图：点击只放大，不触发外层链接跳转
+  document.querySelectorAll('[data-zoom]').forEach(function (el) {
+    if (el.closest('#imgZoom')) return;
+    var fire = function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var img = el.querySelector('img');
+      window.ggZoom(el.dataset.zoom, el.dataset.alt || el.getAttribute('alt') || (img && img.alt) || '', el);
+    };
+    el.addEventListener('click', fire);
+    el.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') fire(e);
+    });
+  });
+})();
+</script>
