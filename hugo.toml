@@ -23,6 +23,10 @@ timeZone = 'Asia/Singapore'
   [params.comments.waline]
     serverURL = 'https://waline-server-amber.vercel.app'
 
+  # 访问统计：与主站同一 hostname，共用同一个 Cloudflare Web Analytics token
+  [params.analytics.cloudflare]
+    token = '6aaf83fc05e244f88ca89346fb1acdcb'
+
 [markup]
   [markup.goldmark.renderer]
     unsafe = true
