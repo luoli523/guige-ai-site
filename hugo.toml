@@ -19,6 +19,10 @@ timeZone = 'Asia/Singapore'
   mainSite = 'https://luoli523.github.io/'
   repo = 'https://github.com/luoli523/guige-ai-site'
 
+  # 评论 / 浏览量：与主站共用同一个 Waline 后端，按 URL 路径区分
+  [params.comments.waline]
+    serverURL = 'https://waline-server-amber.vercel.app'
+
 [markup]
   [markup.goldmark.renderer]
     unsafe = true
