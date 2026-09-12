@@ -39,6 +39,8 @@ REQUIRED_SEMANTICS = (
     ("来源", ("来源", "延伸阅读")),
     ("行动", ("行动建议", "今日行动", "学习与行动")),
 )
+# 四个固定类别，必须全部出现且按此顺序。见 docs/BOT.md 报告结构第 2 节。
+CATEGORY_HEADINGS = ("大厂与学术界动态", "X 动态", "热门开源项目", "模型相关")
 
 class Invalid(Exception):
     """输入不合规。"""
@@ -121,6 +123,15 @@ def validate(data: dict) -> dict:
     m = re.search(r"^##[^#][^\n]*速览[^\n]*\n+(.*?)(?=^##[^#]|\Z)", body, re.M | re.S)
     if m and not re.match(r"\s*[-*]\s", m.group(1)):
         raise Invalid("「一分钟速览」的内容必须是无序列表（- 开头），不要写成段落")
+
+    positions = []
+    for name in CATEGORY_HEADINGS:
+        hm = re.search(rf"^##\s*{re.escape(name)}\s*$", body, re.M)
+        if not hm:
+            raise Invalid(f"正文缺少类别标题「## {name}」；四个类别标题必须全部出现，无主线也要保留标题")
+        positions.append(hm.start())
+    if positions != sorted(positions):
+        raise Invalid("四个类别标题顺序须为：" + " → ".join(CATEGORY_HEADINGS))
 
 
     title = str(data.get("title") or f"{d.isoformat()} AI行业动态").strip()
