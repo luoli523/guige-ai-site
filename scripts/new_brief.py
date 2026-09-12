@@ -103,7 +103,7 @@ def validate(data: dict) -> dict:
     if len(compact) < MIN_BODY_CHARS:
         raise Invalid(
             f"正文过短：去空白后 {len(compact)} 字符，下限 {MIN_BODY_CHARS}。"
-            "请按 docs/BOT.md 写深（导读 + 按需内容板块 + 行动建议；全天约 3–5 条重点）。"
+            "请按 docs/BOT.md 写深（速览 + 执行摘要 + 四类别主线 + 来源 + 行动建议；单条主线约 500–900 字）。"
         )
 
     for label, keys in REQUIRED_SEMANTICS:
