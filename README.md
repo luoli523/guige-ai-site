@@ -45,7 +45,7 @@ content/
 
 - 文件：`content/daily/YYYY-MM-DD.md` → URL `/daily/YYYY-MM-DD/`
 - 输入：JSON，必填 `summary` + `body_markdown`（完整深读 Markdown）
-- 结构：执行摘要 · 2–4 主线深度解析（FACT/官方自报/待核）· 次要动态 · 来源 · 行动建议
+- 结构：一分钟速览 · 执行摘要 · 四类别主线（大厂与学术界 / X / 热门开源项目 / 模型相关，每类 1–3 条，通俗讲解 + 深入学习建议）· 次要动态 · 来源 · 行动建议
 - 深度下限：正文去空白 ≥ 2500 字；旧版短讯 `sections/items` schema 已废弃
 
 ```bash
