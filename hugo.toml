@@ -23,10 +23,6 @@ timeZone = 'Asia/Singapore'
   [params.comments.waline]
     serverURL = 'https://waline-server-amber.vercel.app'
 
-  # 邮件订阅：Buttondown 用户名（表单地址 …/embed-subscribe/<username>）；发送由 GitHub Actions 触发
-  [params.subscribe]
-    buttondown = 'luoli523'
-
   # 访问统计：与主站同一 hostname，共用同一个 Cloudflare Web Analytics token
   [params.analytics.cloudflare]
     token = '6aaf83fc05e244f88ca89346fb1acdcb'
