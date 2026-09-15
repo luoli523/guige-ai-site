@@ -1,0 +1,21 @@
+{{/*
+  邮件订阅表单（Buttondown 嵌入表单，纯 HTML，无第三方脚本）
+  用法：{{ partial "subscribe.html" (dict "size" "large" "source" "daily-home") }}
+    size   : "large"（首页大块）| "compact"（文末小块）
+    source : 记录订阅来源，落到 Buttondown 订阅者的 metadata.source
+  提交后新开 Buttondown 的确认页，读者去邮箱点确认（双重确认）。
+*/}}
+{{ $user := .site.Params.subscribe.buttondown }}
+{{ $size := .size | default "compact" }}
+<section class="subscribe subscribe-{{ $size }}" aria-label="邮件订阅">
+  <div class="subscribe-text">
+    <div class="subscribe-eyebrow">Newsletter</div>
+    <h2 class="subscribe-title">{{ if eq $size "large" }}订阅鬼哥的更新{{ else }}订阅更新{{ end }}</h2>
+    <p class="subscribe-desc">每日 AI 行业深读 + 鬼哥的博客新文，直接送到邮箱。只发摘要和链接，随时一键退订。</p>
+  </div>
+  <form class="subscribe-form" action="https://buttondown.com/api/emails/embed-subscribe/{{ $user }}" method="post" target="_blank">
+    <input class="subscribe-input" type="email" name="email" placeholder="you@example.com" autocomplete="email" required aria-label="邮箱地址" />
+    <input type="hidden" name="metadata__source" value="{{ .source }}" />
+    <button class="subscribe-btn" type="submit">订阅</button>
+  </form>
+</section>
