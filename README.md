@@ -14,6 +14,7 @@
 | 设计系统 | 复用主站 [luoli523.github.io](https://github.com/luoli523/luoli523.github.io) 的 Ghost Protocol 配色与字体 |
 | 部署 | GitHub Actions → GitHub Pages，push 到 `main` 即发布 |
 | 主题切换 | `localStorage.gg-theme`，与主站同域共享，切换状态跨站保持 |
+| 评论 / 表情 / 浏览量 | Waline，与主站共用后端；运维与升级手册见主站 [docs/WALINE.md](https://github.com/luoli523/luoli523.github.io/blob/master/docs/WALINE.md) |
 
 ## 目录结构
 
