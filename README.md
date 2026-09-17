@@ -15,6 +15,7 @@
 | 部署 | GitHub Actions → GitHub Pages，push 到 `main` 即发布 |
 | 主题切换 | `localStorage.gg-theme`，与主站同域共享，切换状态跨站保持 |
 | 评论 / 表情 / 浏览量 | Waline，与主站共用后端；运维与升级手册见主站 [docs/WALINE.md](https://github.com/luoli523/luoli523.github.io/blob/master/docs/WALINE.md) |
+| 邮件订阅 | 表单 → `subscribe.guige.ai` → Resend 名单「AI 每日动态」；新简报部署后由 `deploy.yml` 的 notify job 调 `scripts/notify_subscribers.py` 群发。手册见主站 [docs/NEWSLETTER.md](https://github.com/luoli523/luoli523.github.io/blob/master/docs/NEWSLETTER.md) |
 
 ## 目录结构
 
@@ -25,6 +26,7 @@ assets/css/main.css           设计系统（token + 组件）
 assets/css/syntax.css         代码高亮（hugo gen chromastyles 生成）
 docs/BOT.md                   bot 更新指南（操作规范 + JSON schema + 退出码）
 scripts/new_brief.py          JSON → 简报：校验、渲染、构建、提交
+scripts/notify_subscribers.py 新内容 → Resend 群发（三站共用）
 layouts/
   baseof.html                 页面外壳：head / orb / nav / footer / JS
   home.html                   首页：头条 + 往期列表
