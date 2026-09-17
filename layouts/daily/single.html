@@ -111,6 +111,8 @@
     {{ end }}
   </nav>
 
+  {{ partial "subscribe.html" (dict "page" . "size" "compact" "source" "daily-post") }}
+
   {{/* 评论 + 表情反应 + 浏览量：与主站共用同一个 Waline 后端，按 URL 路径区分 */}}
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client@v3/dist/waline.css" />
   <style>

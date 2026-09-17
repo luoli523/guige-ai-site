@@ -1,0 +1,30 @@
+{{/*
+  邮件订阅表单：纯 HTML，POST 到 subscribe.guige.ai（仓库 luoli523/guige-subscribe，名单在 Resend）
+  用法：{{ partial "subscribe.html" (dict "page" . "size" "large" "source" "daily-home") }}
+    size   : "large"（首页大块）| "compact"（文末小块）
+    source : 订阅来源标记，进确认 token，便于统计哪个入口带来订阅
+  三个勾选框对应三个名单；本站默认勾 AI 与博客。提交后跳到「请查收邮件」页，读者去邮箱点确认。
+*/}}
+{{ $endpoint := .page.Site.Params.subscribe.endpoint }}
+{{ $size := .size | default "compact" }}
+<section class="subscribe subscribe-{{ $size }}" aria-label="邮件订阅">
+  <div class="subscribe-text">
+    <div class="subscribe-eyebrow">Newsletter</div>
+    <h2 class="subscribe-title">{{ if eq $size "large" }}订阅鬼哥的更新{{ else }}订阅更新{{ end }}</h2>
+    <p class="subscribe-desc">新内容直接送到邮箱，只发摘要和链接，每封都能一键退订。勾选你想收的：</p>
+  </div>
+  <form class="subscribe-form" action="{{ $endpoint }}" method="post">
+    <div class="subscribe-lists">
+      <label><input type="checkbox" name="list" value="ai" checked /> AI 每日动态</label>
+      <label><input type="checkbox" name="list" value="blog" checked /> 鬼哥博客</label>
+      <label><input type="checkbox" name="list" value="poem" /> 鬼话诗</label>
+    </div>
+    <div class="subscribe-row">
+      <input class="subscribe-input" type="email" name="email" placeholder="you@example.com" autocomplete="email" required aria-label="邮箱地址" />
+      <button class="subscribe-btn" type="submit">订阅</button>
+    </div>
+    <input type="hidden" name="source" value="{{ .source }}" />
+    <input type="hidden" name="back" value="{{ .page.Permalink }}" />
+    <input class="subscribe-hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
+  </form>
+</section>
