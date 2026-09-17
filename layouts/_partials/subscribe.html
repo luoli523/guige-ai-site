@@ -3,15 +3,15 @@
   用法：{{ partial "subscribe.html" (dict "page" . "size" "large" "source" "daily-home") }}
     size   : "large"（首页大块）| "compact"（文末小块）
     source : 订阅来源标记，进确认 token，便于统计哪个入口带来订阅
-  每个站只订自己的名单（本站 = AI 每日动态），不做多选。提交后跳到「请查收邮件」页，读者去邮箱点确认。
+  每个站只订自己的名单（本站 = 鬼哥AI行业动态&学习指引），不做多选。提交后跳到「请查收邮件」页，读者去邮箱点确认。
 */}}
 {{ $endpoint := .page.Site.Params.subscribe.endpoint }}
 {{ $size := .size | default "compact" }}
 <section class="subscribe subscribe-{{ $size }}" aria-label="邮件订阅">
   <div class="subscribe-text">
     <div class="subscribe-eyebrow">Newsletter</div>
-    <h2 class="subscribe-title">{{ if eq $size "large" }}订阅每日 AI 动态{{ else }}订阅每日动态{{ end }}</h2>
-    <p class="subscribe-desc">每天一篇 AI 行业深读，摘要和链接直接送到邮箱，每封都能一键退订。</p>
+    <h2 class="subscribe-title">{{ if eq $size "large" }}订阅 AI 行业动态{{ else }}订阅更新{{ end }}</h2>
+    <p class="subscribe-desc">AI 圈有值得说的事就发一封速览和链接，不定期，每封都能一键退订。</p>
   </div>
   <form class="subscribe-form" action="{{ $endpoint }}" method="post">
     <input type="hidden" name="list" value="ai" />
