@@ -7,7 +7,7 @@
         --base-url https://luoli523.github.io/guige-ai-site \
         --audience <Resend audience id> [--dry-run]
 
-    --kind daily : 本站每日简报，正文 = summary + 一分钟速览 + 执行摘要 + 链接
+    --kind daily : 本站每日简报，正文 = summary + 一分钟速览 + 链接
     --kind post  : 主站博客文章，正文 = description + 链接
     --kind poem  : 鬼话诗，正文 = 诗句 + summary（引子）+ 链接
     --dry-run    : 只在 Resend 建草稿 broadcast，不发送
@@ -123,8 +123,6 @@ def build_daily(meta: dict, body: str, base: str, path: Path) -> tuple[str, str,
         md.append(f"> {meta['summary']}")
     if g := section(body, "一分钟速览"):
         md.append("## 一分钟速览\n\n" + g)
-    if d := section(body, "执行摘要"):
-        md.append("## 执行摘要\n\n" + d)
     md.append("本期由自动化流水线采集与生成，未经逐条人工核实，请以原始信源为准。")
     text = "\n\n".join(md) + f"\n\n阅读全文：{url}\n\n{FOOTER}"
     return title, wrap(title, md_to_html("\n\n".join(md)), url), text, url
