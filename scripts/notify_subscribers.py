@@ -36,6 +36,12 @@ API = "https://api.resend.com"
 FROM = "鬼哥 <hi@guige.ai>"
 REPLY_TO = "luoli523@gmail.com"
 FOOTER = "你收到这封邮件是因为在鬼哥的站点订阅了更新。不想再收：{{{RESEND_UNSUBSCRIBE_URL}}}"
+# 邮件顶部抬头图：各站 static 下的 600px JPEG（Outlook 不认 WebP）
+COVERS = {
+    "daily": ("https://luoli523.github.io/guige-ai-site/img/cover-email.jpg", "鬼哥的 AI 行业动态"),
+    "post": ("https://luoli523.github.io/img/cover-email.jpg", "鬼哥的空间"),
+    "poem": ("https://luoli523.github.io/poem_gen_pub/cover-email.jpg", "鬼话诗"),
+}
 
 
 def parse_front_matter(text: str) -> tuple[dict, str]:
@@ -104,8 +110,10 @@ def md_to_html(md: str) -> str:
     return "\n".join(out)
 
 
-def wrap(title: str, body_html: str, url: str) -> str:
+def wrap(title: str, body_html: str, url: str, kind: str) -> str:
+    src, alt = COVERS[kind]
     return f"""<div style="font:16px/1.75 -apple-system,'Noto Serif SC','Source Han Serif SC',serif;color:#1e2230;max-width:38em;margin:0 auto;padding:24px">
+<p style="margin:0 0 22px"><a href="{html.escape(url)}"><img src="{src}" alt="{alt}" width="560" style="display:block;width:100%;max-width:560px;height:auto;border-radius:10px"></a></p>
 <h2 style="font-size:1.35rem;margin:0 0 16px">{html.escape(title)}</h2>
 {body_html}
 <p style="margin:28px 0"><a href="{html.escape(url)}" style="background:#2dd4bf;color:#07090f;padding:12px 22px;border-radius:8px;text-decoration:none;font-weight:600">阅读全文 →</a></p>
@@ -125,7 +133,7 @@ def build_daily(meta: dict, body: str, base: str, path: Path) -> tuple[str, str,
         md.append("## 一分钟速览\n\n" + g)
     md.append("本期由自动化流水线采集与生成，未经逐条人工核实，请以原始信源为准。")
     text = "\n\n".join(md) + f"\n\n阅读全文：{url}\n\n{FOOTER}"
-    return title, wrap(title, md_to_html("\n\n".join(md)), url), text, url
+    return title, wrap(title, md_to_html("\n\n".join(md)), url, "daily"), text, url
 
 
 def build_post(meta: dict, body: str, base: str, path: Path) -> tuple[str, str, str, str]:
@@ -134,7 +142,7 @@ def build_post(meta: dict, body: str, base: str, path: Path) -> tuple[str, str, 
     title = meta.get("title") or slug
     desc = meta.get("description") or meta.get("summary") or ""
     text = (desc + "\n\n" if desc else "") + f"阅读全文：{url}\n\n{FOOTER}"
-    return title, wrap(title, md_to_html(desc), url), text, url
+    return title, wrap(title, md_to_html(desc), url, "post"), text, url
 
 
 def build_poem(meta: dict, body: str, base: str, path: Path) -> tuple[str, str, str, str]:
@@ -148,7 +156,7 @@ def build_poem(meta: dict, body: str, base: str, path: Path) -> tuple[str, str, 
         parts_html += f"<p>{html.escape(meta['summary'])}</p>"
     subject = f"{title}" + (f" · {who}" if who else "")
     text = (who + "\n\n" if who else "") + "\n".join(lines) + "\n\n" + meta.get("summary", "") + f"\n\n读这首的背后：{url}\n\n{FOOTER}"
-    return subject, wrap(title, parts_html, url), text, url
+    return subject, wrap(title, parts_html, url, "poem"), text, url
 
 
 BUILDERS = {"daily": build_daily, "post": build_post, "poem": build_poem}
