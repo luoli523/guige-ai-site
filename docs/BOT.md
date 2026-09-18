@@ -327,7 +327,7 @@ echo "$BRIEF_JSON" | python3 scripts/new_brief.py --check
 - **站点 Markdown = 规范正文（canonical）**  
 - 给用户的 HTML/PDF 应从同一 `body_markdown`（或同一结构化草稿）导出，章节与证据标签保持一致  
 - 禁止再维护「短站上简报 + 另一套深读 HTML」两套互相矛盾的叙事  
-- **全量原始归档（2026-09-18+，强制）**：上站成功后，笔记小宝另出两份**私有**文件交给总管/用户——(1) 四路素材合并的全量原始 `.md`；(2) 同内容带本期 hero 图的 `.pdf`。**不要**推进 `content/daily/` 公开页；建议落盘 `/workspace/daily-YYYY-MM-DD/YYYY-MM-DD-sources-full.{md,pdf}`。 归档正文里**所有 URL 必须写成 `[短标签](url)` Markdown 链接**，禁止裸贴长串。  
+- **全量原始附件（见上方「每日素材附件」）**：只维护 `static/daily/YYYY-MM-DD-sources-full.md`；URL 一律 `[短标签](url)`；开头人话导语；不堆配图路径元信息；**不做 PDF**，也不必每次私发给用户。  
 
 ---
 
