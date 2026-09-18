@@ -35,7 +35,12 @@ from pathlib import Path
 API = "https://api.resend.com"
 FROM = "鬼哥 <hi@guige.ai>"
 REPLY_TO = "luoli523@gmail.com"
+# 页脚：纯文本版只能放链接；HTML 版用红色「退订」按钮，不露那一长串 URL
 FOOTER = "你收到这封邮件是因为在鬼哥的站点订阅了更新。不想再收：{{{RESEND_UNSUBSCRIBE_URL}}}"
+FOOTER_HTML = ('<p style="color:#6a6f7d;font-size:13px;border-top:1px solid #e5e5e5;padding-top:14px;margin-top:28px">'
+               '你收到这封邮件是因为在鬼哥的站点订阅了更新。不想再收，点这里：</p>'
+               '<p style="margin:0"><a href="{{{RESEND_UNSUBSCRIBE_URL}}}" style="display:inline-block;background:#b4402c;color:#fff;'
+               'padding:8px 16px;border-radius:6px;text-decoration:none;font-size:13px">退订</a></p>')
 # 邮件顶部抬头图：各站 static 下的 600px JPEG（Outlook 不认 WebP）
 COVERS = {
     "daily": ("https://luoli523.github.io/guige-ai-site/img/cover-email.jpg", "鬼哥的 AI 行业动态"),
@@ -117,7 +122,7 @@ def wrap(title: str, body_html: str, url: str, kind: str) -> str:
 <h2 style="font-size:1.35rem;margin:0 0 16px">{html.escape(title)}</h2>
 {body_html}
 <p style="margin:28px 0"><a href="{html.escape(url)}" style="background:#2dd4bf;color:#07090f;padding:12px 22px;border-radius:8px;text-decoration:none;font-weight:600">阅读全文 →</a></p>
-<p style="color:#6a6f7d;font-size:13px;border-top:1px solid #e5e5e5;padding-top:14px">{FOOTER}</p>
+{FOOTER_HTML}
 </div>"""
 
 
