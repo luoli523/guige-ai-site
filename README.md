@@ -36,6 +36,7 @@ layouts/
   daily/list.html             归档页（按月分组）
   daily/single.html           单日简报页
   _partials/                  nav / footer / brief-card
+static/daily/YYYY-MM-DD/sources.md  每日采集原稿（bot 产出，页面顶部可下载）
 content/
   daily/YYYY-MM-DD.md         每日简报 ← bot 产出落在这里
   daily/_index.md             归档页元信息

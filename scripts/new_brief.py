@@ -28,6 +28,8 @@ from zoneinfo import ZoneInfo
 TZ = ZoneInfo("Asia/Singapore")
 REPO = Path(__file__).resolve().parent.parent
 CONTENT_DIR = REPO / "content" / "daily"
+STATIC_DAILY = REPO / "static" / "daily"   # 每日素材附件：static/daily/YYYY-MM-DD/sources.md
+MAX_SOURCES_BYTES = 3 * 1024 * 1024
 
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 MAX_TAGS = 8
@@ -151,9 +153,26 @@ def validate(data: dict) -> dict:
         "sources": dedup(data.get("sources") or []),
         "hero": hero,
         "hero_alt": hero_alt,
+        "sources_md": find_sources_md(d),
         "body_markdown": body,
         "body_chars": len(compact),
     }
+
+
+def find_sources_md(d: date) -> Path | None:
+    """bot 把当日采集原稿放在 static/daily/YYYY-MM-DD/sources.md；有就挂到页面，没有不阻塞。"""
+    p = STATIC_DAILY / d.isoformat() / "sources.md"
+    if not p.exists():
+        return None
+    size = p.stat().st_size
+    if size == 0:
+        raise Invalid(f"{p.relative_to(REPO)} 是空文件")
+    if size > MAX_SOURCES_BYTES:
+        raise Invalid(f"{p.relative_to(REPO)} 太大：{size / 1024 / 1024:.1f} MB，上限 3 MB。素材进 git，请精简")
+    text = p.read_text(encoding="utf-8", errors="replace")
+    if "小宝" in text:
+        raise Invalid(f"{p.relative_to(REPO)} 含内部队友名，违反对外隐私规则（docs/BOT.md）")
+    return p
 
 
 def render(b: dict) -> str:
@@ -172,6 +191,8 @@ def render(b: dict) -> str:
         fm.append(f"hero: {q(b['hero'], ensure_ascii=False)}")
         if b.get("hero_alt"):
             fm.append(f"hero_alt: {q(b['hero_alt'], ensure_ascii=False)}")
+    if b.get("sources_md"):
+        fm.append(f"sources_md: {q(str(b['sources_md'].relative_to(REPO / 'static')), ensure_ascii=False)}")
     if b["sources"]:
         fm.append(
             "sources: ["
@@ -234,6 +255,10 @@ def main() -> None:
             f"--- 校验通过：深读 {brief['body_chars']} 字符 → {path.relative_to(REPO)}",
             file=sys.stderr,
         )
+        if brief["sources_md"]:
+            print(f"--- 附件：{brief['sources_md'].relative_to(REPO)}（{brief['sources_md'].stat().st_size // 1024} KB）", file=sys.stderr)
+        else:
+            print("--- 无素材附件（static/daily/<date>/sources.md 不存在）", file=sys.stderr)
         return
 
     existed = path.exists()
@@ -261,7 +286,8 @@ def main() -> None:
         return
 
     msg = f"content: {brief['date'].isoformat()} AI行业动态"
-    r = run(["git", "add", str(path)])
+    to_add = [str(path)] + ([str(brief["sources_md"])] if brief["sources_md"] else [])
+    r = run(["git", "add", *to_add])
     if r.returncode != 0:
         fail(4, f"git add 失败：{r.stderr}")
 

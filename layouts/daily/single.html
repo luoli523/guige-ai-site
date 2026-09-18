@@ -31,6 +31,9 @@
       <span>{{ .ReadingTime }} 分钟阅读</span>
       <span><span class="waline-pageview-count" data-path="{{ .RelPermalink }}">–</span> 次阅读</span>
       {{ with .Params.sources }}<span>信源：{{ delimit . " · " }}</span>{{ end }}
+      {{ with .Params.sources_md }}{{ with os.Stat (printf "static/%s" .) }}
+        <a class="article-attachment" href="{{ $.Params.sources_md | relURL }}" download title="本期采集原稿（Markdown）">📎 本期素材 Markdown<small>{{ div (add .Size 1023) 1024 }} KB</small></a>
+      {{ end }}{{ end }}
     </div>
 
     <h1 class="article-title">{{ .Title }}</h1>
