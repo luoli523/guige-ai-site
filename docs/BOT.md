@@ -123,14 +123,14 @@ AI学习总管协调本站日报时，下列专才**只能真派、不能扮演*
 | G小宝 | `8665fd5d-55fa-469a-bd41-a67f6c325098` | GitHub Release / 热仓 / 关键 org |
 | 模型小宝 | `ad9e51e2-5f91-4ff0-ba70-347ebb01c69d` | HF Trending / org 模型卡 |
 | 研小宝 | `44d7deda-5d7d-40ae-a3cc-093c72597897` | 官博 / arXiv |
-| 笔记小宝 | `25c2dc88-f214-41c1-9c2f-d4a7a82dfe82` | 汇总四路素材 → 按本 BOT 成稿 → 派 V小宝配图 → `new_brief.py` 上站 → **再出全量原始 MD + 带图 PDF（私有归档，不入公开站）** |
+| 笔记小宝 | `25c2dc88-f214-41c1-9c2f-d4a7a82dfe82` | 汇总四路素材 → 按本 BOT 成稿 → 派 V小宝配图 → 放 `static/daily/YYYY-MM-DD-sources-full.md` → `new_brief.py` 上站（正文+hero+素材附件） |
 | V小宝 | `e13739b1-0541-48e2-8928-21f3ea8fd275` | 本站每日 hero 配图 |
 
 **分工（2026-09-12）：** AI学习总管只协同（沟通用户、触发、真派、等齐包、把素材交给笔记小宝、拿链接通知用户）。**成稿与 push 只由笔记小宝做**，总管不得自己写站点正文或代推。
 
 **违规形态（2026-09-07 已发生，禁止再现）：** 用 Task 开子代理写「You are Xxx-style / acting as V小宝/笔记小宝」在同一次 routine 里顶替真队友；配图工具不可用时用 Pillow 假图交差。
 
-**正确形态：** 总管 `SendToAgent` 四路采集 → 等 `[agent]` 回传 → `SendToAgent` 笔记小宝成稿上站（笔记小宝内部真派 V小宝）→ 笔记小宝再出**全量原始 MD + 带图 PDF**（私有归档，路径回总管）→ 总管一次通知用户（站点链接 + 两份原始文件）。
+**正确形态：** 总管 `SendToAgent` 四路采集 → 等 `[agent]` 回传 → `SendToAgent` 笔记小宝成稿上站（真派 V小宝；上站前放好 `static/daily/YYYY-MM-DD-sources-full.md`）→ 总管一次通知用户（站点链接；素材由页面下载，不必每次私发文件）。
 
 ## 每日配图（V小宝）
 
@@ -268,7 +268,7 @@ AI学习总管协调本站日报时，下列专才**只能真派、不能扮演*
 
 ```
 采集 → 筛选 → 深读撰写 → 组装 JSON → scripts/new_brief.py → 按退出码决定下一步
-→ 上站成功后：合并四路全量原始 MD + 带图 PDF（私有归档，不入 content/daily）
+→ 上站前：合并四路全量原始 MD 到 static/daily/YYYY-MM-DD-sources-full.md（只 MD，不 PDF）
 ```
 
 **不要手写 front matter。** 产出 JSON，交给脚本渲染与校验。
