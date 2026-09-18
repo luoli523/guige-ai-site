@@ -31,9 +31,6 @@
       <span>{{ .ReadingTime }} 分钟阅读</span>
       <span><span class="waline-pageview-count" data-path="{{ .RelPermalink }}">–</span> 次阅读</span>
       {{ with .Params.sources }}<span>信源：{{ delimit . " · " }}</span>{{ end }}
-      {{ with .Params.sources_md }}{{ with os.Stat (printf "static/%s" .) }}
-        <a class="article-attachment" href="{{ $.Params.sources_md | relURL }}" download title="本期采集原稿（Markdown）">📎 本期素材 Markdown<small>{{ div (add .Size 1023) 1024 }} KB</small></a>
-      {{ end }}{{ end }}
     </div>
 
     <h1 class="article-title">{{ .Title }}</h1>
@@ -76,6 +73,18 @@
         </figure>
       {{ end }}
     {{ end }}
+
+    {{/* 本期采集素材：bot 产出的原始信源整理稿，放在配图正下方，读者读之前就知道可核对 */}}
+    {{ with .Params.sources_md }}{{ with os.Stat (printf "static/%s" .) }}
+      <a class="article-attachment" href="{{ $.Params.sources_md | relURL }}" download>
+        <span class="attachment-icon" aria-hidden="true">📎</span>
+        <span class="attachment-text">
+          <b>下载本期采集素材</b>
+          <small>四路信源的原始整理稿 · Markdown · {{ div (add .Size 1023) 1024 }} KB</small>
+        </span>
+        <span class="attachment-cta">下载 ↓</span>
+      </a>
+    {{ end }}{{ end }}
   </header>
 
   {{/* 长文目录：右上角浮窗，跟随阅读高亮当前小节。短简报不显示 */}}
