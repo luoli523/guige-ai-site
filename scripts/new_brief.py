@@ -28,7 +28,7 @@ from zoneinfo import ZoneInfo
 TZ = ZoneInfo("Asia/Singapore")
 REPO = Path(__file__).resolve().parent.parent
 CONTENT_DIR = REPO / "content" / "daily"
-STATIC_DAILY = REPO / "static" / "daily"   # 每日素材附件：static/daily/YYYY-MM-DD/sources.md
+STATIC_DAILY = REPO / "static" / "daily"   # 每日素材附件：static/daily/YYYY-MM-DD-sources-full.md
 MAX_SOURCES_BYTES = 3 * 1024 * 1024
 
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
@@ -160,8 +160,8 @@ def validate(data: dict) -> dict:
 
 
 def find_sources_md(d: date) -> Path | None:
-    """bot 把当日采集原稿放在 static/daily/YYYY-MM-DD/sources.md；有就挂到页面，没有不阻塞。"""
-    p = STATIC_DAILY / d.isoformat() / "sources.md"
+    """bot 把当日采集原稿放在 static/daily/YYYY-MM-DD-sources-full.md；有就挂到页面，没有不阻塞。"""
+    p = STATIC_DAILY / f"{d.isoformat()}-sources-full.md"
     if not p.exists():
         return None
     size = p.stat().st_size
@@ -258,7 +258,7 @@ def main() -> None:
         if brief["sources_md"]:
             print(f"--- 附件：{brief['sources_md'].relative_to(REPO)}（{brief['sources_md'].stat().st_size // 1024} KB）", file=sys.stderr)
         else:
-            print("--- 无素材附件（static/daily/<date>/sources.md 不存在）", file=sys.stderr)
+            print("--- 无素材附件（static/daily/<date>-sources-full.md 不存在）", file=sys.stderr)
         return
 
     existed = path.exists()

@@ -168,12 +168,12 @@ AI学习总管协调本站日报时，下列专才**只能真派、不能扮演*
 
 把当天四路信源采回、经交叉核实后的**原始素材整理稿**（Markdown）随简报一起发布，读者可在简报页顶部下载核对。
 
-- **路径固定**：`static/daily/YYYY-MM-DD/sources.md`，日期与当天简报一致。跑 `new_brief.py` 之前放好即可，
+- **路径固定**：`static/daily/YYYY-MM-DD-sources-full.md`，日期与当天简报一致。跑 `new_brief.py` 之前放好即可，
   脚本会自动探测、校验、写入 front matter `sources_md` 并与正文一起提交；**不放就不挂**，不阻塞发布。
 - **只放 Markdown**，不放 PDF（每天都进 git，PDF 会把仓库撑爆）。单文件 ≤ 3 MB，超了脚本拒绝。
 - 内容组织自定（建议按四路信源分节，每条带原始链接、抓取时间、一句话摘要），但**对外隐私规则同样适用**：
   不得出现用户 X handle、内部队友名（各「小宝」）与派单痕迹，脚本会检查后者。
-- 下载地址即 `/daily/YYYY-MM-DD/sources.md`，`--check` 时会打印是否找到附件及大小。
+- 下载地址即 `/daily/YYYY-MM-DD-sources-full.md`，`--check` 时会打印是否找到附件及大小。
 
 
 ## 报告结构（强制）
