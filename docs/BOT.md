@@ -154,10 +154,11 @@ AI学习总管协调本站日报时，下列专才**只能真派、不能扮演*
   - `hero: "img/daily/YYYY-MM-DD-infographic.png"`
   - `hero_alt: "……"`（简短中文说明）
 - 模板在标题/摘要/标签下方自动渲染 hero（读者点击可看大图），**不要**在正文里再手写一遍同图，也**不要**手写目录
+- **二维码（2026-09-27+ 必做）：** hero 图须嵌入当日文章链接的二维码，URL 固定为 `https://luoli523.github.io/guige-ai-site/daily/YYYY-MM-DD/`。派 V小宝时写明该 URL；图内角落、高对比、可扫、不挡主文案。
 
 ### 总管流程（与四路信源一样：齐了再发）
 1. 四路信源齐 → 写深读 JSON（尚可不含 hero）
-2. 总管选题型与风格 → **`SendToAgent` 真·V小宝**出图（禁止扮演）；**等图到位**；禁止 Pillow 假图
+2. 总管选题型与风格 → **`SendToAgent` 真·V小宝**出图（禁止扮演；派单写明当日 daily URL 并要求图内嵌二维码）；**等图到位**；禁止 Pillow 假图
 3. 把 png 拷进 `assets/img/daily/`，JSON 补上 `hero` / `hero_alt`
 4. `git pull` → `new_brief.py --commit --push`（或 `--force`）**只推一次**
 5. 对用户只通知 daily 链接一次
