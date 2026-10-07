@@ -2,7 +2,7 @@
 
 > 每日 AI 行业与技术动态，自动采集、自动梳理、每日更新。
 
-站点：<https://luoli523.github.io/guige-ai-site/>
+站点：<https://guige.ai/guige-ai-site/>
 
 一天一篇汇总简报。内容由后台 bot 抓取 X.com 与科技媒体、经 LLM 梳理后产出 Markdown，提交到本仓库即自动构建发布。页面明示 AI 自动生成，信源与筛选标准公开在「关于本站」页。
 

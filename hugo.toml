@@ -1,4 +1,4 @@
-baseURL = 'https://luoli523.github.io/guige-ai-site/'
+baseURL = 'https://guige.ai/guige-ai-site/'
 languageCode = 'zh-CN'
 defaultContentLanguage = 'zh-cn'
 title = '鬼哥的 AI 行业动态'
@@ -16,7 +16,7 @@ timeZone = 'Asia/Singapore'
 [params]
   description = '每日 AI 行业与技术深读，自动采集、交叉核实、每日更新。'
   subtitle = "Gui Ge's AI Radar"
-  mainSite = 'https://luoli523.github.io/'
+  mainSite = 'https://guige.ai/'
   repo = 'https://github.com/luoli523/guige-ai-site'
 
   # 评论 / 浏览量：与主站共用同一个 Waline 后端，按 URL 路径区分

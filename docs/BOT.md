@@ -160,7 +160,7 @@ AI学习总管协调本站日报时，下列专才**只能真派、不能扮演*
   - `hero: "img/daily/YYYY-MM-DD-infographic.png"`
   - `hero_alt: "……"`（简短中文说明）
 - 模板在标题/摘要/标签下方自动渲染 hero（读者点击可看大图），**不要**在正文里再手写一遍同图，也**不要**手写目录
-- **二维码（2026-09-27+ 必做）：** hero 图须嵌入当日文章链接的二维码，URL 固定为 `https://luoli523.github.io/guige-ai-site/daily/YYYY-MM-DD/`。派 V小宝时写明该 URL；图内角落、高对比、可扫、不挡主文案。
+- **二维码（2026-09-27+ 必做）：** hero 图须嵌入当日文章链接的二维码，URL 固定为 `https://guige.ai/guige-ai-site/daily/YYYY-MM-DD/`。派 V小宝时写明该 URL；图内角落、高对比、可扫、不挡主文案。
 
 ### 总管流程（与四路信源一样：齐了再发）
 1. 四路信源齐 → 写深读 JSON（尚可不含 hero）

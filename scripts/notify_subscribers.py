@@ -4,7 +4,7 @@
 用法：
     RESEND_API_KEY=... python3 scripts/notify_subscribers.py \
         --kind daily --file content/daily/2026-09-15.md \
-        --base-url https://luoli523.github.io/guige-ai-site \
+        --base-url https://guige.ai/guige-ai-site \
         --audience <Resend audience id> [--dry-run]
 
     --kind daily : 本站每日简报，正文 = summary + 一分钟速览 + 链接
@@ -43,9 +43,9 @@ FOOTER_HTML = ('<p style="color:#6a6f7d;font-size:13px;border-top:1px solid #e5e
                'padding:8px 16px;border-radius:6px;text-decoration:none;font-size:13px">退订</a></p>')
 # 邮件顶部抬头图：各站 static 下的 600px JPEG（Outlook 不认 WebP）
 COVERS = {
-    "daily": ("https://luoli523.github.io/guige-ai-site/img/cover-email.jpg", "鬼哥的 AI 行业动态"),
-    "post": ("https://luoli523.github.io/img/cover-email.jpg", "鬼哥的空间"),
-    "poem": ("https://luoli523.github.io/poem_gen_pub/cover-email.jpg", "鬼话诗"),
+    "daily": ("https://guige.ai/guige-ai-site/img/cover-email.jpg", "鬼哥的 AI 行业动态"),
+    "post": ("https://guige.ai/img/cover-email.jpg", "鬼哥的空间"),
+    "poem": ("https://guige.ai/poem_gen_pub/cover-email.jpg", "鬼话诗"),
 }
 
 

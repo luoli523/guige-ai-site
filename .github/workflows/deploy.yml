@@ -75,6 +75,6 @@ jobs:
           if [ -z "$NEW" ]; then echo "本次 push 没有新增简报，跳过"; exit 0; fi
           for F in $NEW; do
             python3 scripts/notify_subscribers.py --kind daily --file "$F" \
-              --base-url https://luoli523.github.io/guige-ai-site \
+              --base-url https://guige.ai/guige-ai-site \
               --audience 78a9e1a3-2334-4cb2-a2b0-fefe971c28f5
           done
